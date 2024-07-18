@@ -1,0 +1,167 @@
+:root {
+  --sidebar-width: 190px;
+  --navbar-height: 55px;
+  --collapsible-left: 169px;
+  --collapsible-top: 50px;
+  --primary: #00afef;
+}
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;500;600;700&display=swap");
+@font-face {
+  font-family: "Comalle";
+  src: url("../assets/fonts/Comalle.woff2");
+}
+@font-face {
+  font-family: "Lucida";
+  src: url("../assets/fonts/LucidaUnicodeCalligraphy.ttf");
+}
+@font-face {
+  font-family: "Arial Rounded";
+  src: url("../assets/fonts/ARLRDBD.ttf");
+}
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url("../assets/fonts/OpenSans-CondLight.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  list-style-type: none;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px; /* Adjust the width of the scroll bar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the scroll bar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scroll bar thumb */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scroll bar thumb on hover */
+}
+
+input::placeholder {
+  color: #4b506d45;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  /* font-size: 10px; */
+  font-size: 14px;
+  scrollbar-gutter: stable;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  color: #000000;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.1rem;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 500;
+  color: #9fa2b4;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 60px;
+}
+
+.db__height {
+  padding: 10px;
+  min-height: calc(100dvh - 65px);
+  min-height: 100%;
+  background-color: #f9f9f9;
+}
+
+/* progress keyframe */
+@keyframes progress {
+  0% {
+    --percentage: 0;
+  }
+  100% {
+    --percentage: var(--value);
+  }
+}
+
+@keyframes barprogress {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: calc(var(--value) * 1%);
+  }
+}
+
+@property --percentage {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.dropdown-menu.show {
+  display: block;
+  border-radius: 0;
+  box-shadow: 6px 7px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid transparent;
+}
+
+.dropdown-toggle {
+  background-color: transparent;
+  color: green;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+}
+
+.dropdown-toggle::after {
+  content: "" !important;
+  display: none !important;
+}
+
+tbody {
+  font-weight: 600;
+  font-size: 14px;
+}
+.layout-width {
+  width: calc(100% - 250px);
+  min-width: 320px;
+}
+
+ol,
+ul {
+  padding-left: 0;
+}

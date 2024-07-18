@@ -1,0 +1,219 @@
+import React, { useState } from 'react';
+import usePostRequest from './usePostRequest';
+
+const Register = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, phone] = useState('');
+  const { postRequest, isLoading, error } = usePostRequest('http://localhost:8000/register/');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const registerData = { title, email, phone };
+    postRequest(registerData);
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        {/* Your form inputs */}
+        <button type="submit" disabled={isLoading}>Submit</button>
+      </form>
+      {isLoading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+    </div>
+  );
+};
+
+export default Register;
+
+{response && (
+  <div className="text-green-500 text-center">
+    Admin added successfully!
+  </div>
+)}
+
+<Modal
+  title={modalTitle}
+  open={isModalOpen}
+  onCancel={handleCancel}
+  footer={null}
+>
+  <Form
+    form={form}
+    name="storeForm"
+    initialValues={formData}
+    onFinish={handleSubmit}
+  >
+    <Row gutter={16}>
+      <Col span={12}>
+        <Form.Item
+          name="first_name"
+          rules={[
+            {
+              required: true,
+              message: "Please input the first name!",
+            },
+          ]}
+        >
+          <Input placeholder="First Name" />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item
+          name="last_name"
+          rules={[
+            {
+              required: true,
+              message: "Please input the last name!",
+            },
+          ]}
+        >
+          <Input placeholder="Last Name" />
+        </Form.Item>
+      </Col>
+    </Row>
+    <Row gutter={16}>
+      <Col span={12}>
+        <Form.Item
+          name="phone"
+          rules={[
+            {
+              required: true,
+              message: "Please input the phone number!",
+            },
+          ]}
+        >
+          <Input placeholder="Phone" />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Please input the email!",
+            },
+          ]}
+        >
+          <Input placeholder="Email" />
+        </Form.Item>
+      </Col>
+    </Row>
+    <Row gutter={16}>
+      <Col span={12}>
+        <Form.Item
+          name="house_number"
+          rules={[
+            {
+              required: true,
+              message: "Please input the house number!",
+            },
+          ]}
+        >
+          <Input placeholder="House Number" />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item
+          name="street"
+          rules={[
+            {
+              required: true,
+              message: "Please input the street!",
+            },
+          ]}
+        >
+          <Input placeholder="Street" />
+        </Form.Item>
+      </Col>
+    </Row>
+    <Row gutter={16}>
+      <Col span={12}>
+        <Form.Item
+          name="landmark"
+          rules={[
+            {
+              required: true,
+              message: "Please input the landmark!",
+            },
+          ]}
+        >
+          <Input placeholder="Landmark" />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item
+          name="city"
+          rules={[
+            {
+              required: true,
+              message: "Please input the city!",
+            },
+          ]}
+        >
+          <Input placeholder="City" />
+        </Form.Item>
+      </Col>
+    </Row>
+    <Row gutter={16}>
+      <Col span={12}>
+        <Form.Item
+          name="country"
+          rules={[
+            {
+              required: true,
+              message: "Please input the country!",
+            },
+          ]}
+        >
+          <Input placeholder="Country" />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item
+          name="role"
+          rules={[
+            {
+              required: true,
+              message: "Please select a role!",
+            },
+          ]}
+        >
+          <Select placeholder="Role">
+            <Option value="products_manager">Products Manager</Option>
+            <Option value="store_manager">Store Manager</Option>
+            <Option value="cashier">Cashier</Option>
+          </Select>
+        </Form.Item>
+      </Col>
+    </Row>
+    <Row gutter={16}>
+      <Col span={12}>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input the password!",
+            },
+          ]}
+        >
+          <Input.Password placeholder="Password" />
+        </Form.Item>
+      </Col>
+    </Row>
+    <Form.Item>
+      <Button
+        type="primary"
+        htmlType="submit"
+        className="bg-blue-700"
+        loading={isLoading}
+      >
+        {isLoading ? "Please wait..." : "Submit"}
+      </Button>
+    </Form.Item>
+  </Form>
+</Modal>
+

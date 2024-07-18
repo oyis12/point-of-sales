@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+th {
+  font-size: 0.7rem !important;
+  font-weight: 600;
+}
+td {
+  font-size: 0.9rem !important;
+  font-weight: 600;
+}
+.w-81 {
+  width: 81.6%;
+}
+.bell-text-size {
+  font-size: 9px;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+/* Define the style for the active link */
+.active-link {
+  background-color: #007bff;
+  color: #fff !important;
+  transition: 0.5s ease-in-out;
+  font-weight: 700;
+}
+
+.sidebar_list a {
+  color: #000;
+}
+.bg {
+  background-color: #007bff;
+}
+
+textarea {
+  resize: none !important; /* Disable resizing */
+}

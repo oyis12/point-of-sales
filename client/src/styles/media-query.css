@@ -1,0 +1,77 @@
+/* Root CSS */
+@media (max-width: 1024px) {
+  .layout-width {
+    width: 100%;
+  }
+}
+
+/* Sidebar */
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+  .sidebar-menuactive {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50px;
+    bottom: 0;
+    overflow-y: auto;
+    display: block;
+    z-index: 10;
+  }
+}
+
+/* Navbar */
+@media (max-width: 1024px) {
+  .nav_bar {
+    position: fixed;
+    width: 100%;
+    background: #ffffff;
+    z-index: 10;
+    left: 0;
+  }
+  .navbar__menu {
+    display: block;
+  }
+  .space-top {
+    margin-top: 70px;
+  }
+}
+@media (max-width: 425px) {
+  .nav_bar {
+    min-width: 320px;
+  }
+  .navbar__left h2 {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+}
+/* @media */
+@media (max-height: 550px) {
+  .modal--container {
+    top: 1px;
+    height: 99vh;
+    overflow-y: auto;
+    border-radius: 5px;
+  }
+  .profile--modal {
+    position: relative;
+    border-radius: 0 0 5px 5px;
+  }
+  .modal--body {
+    max-height: none;
+    height: auto;
+    overflow-y: auto;
+    margin: 0;
+  }
+  .modal--actions-btns {
+    position: unset;
+  }
+  .modal--head {
+    position: unset;
+  }
+  .modal--close-btn {
+    margin: 5px 5px 0 0;
+  }
+}
