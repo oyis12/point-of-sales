@@ -65,3 +65,6 @@ label{
 .logo-font{
   font-family: "Edu AU VIC WA NT Hand", cursive;
 }
+.ant-upload, .ant-upload-select{
+  width: 100%;
+}

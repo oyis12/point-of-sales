@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
-import { Input, Button, Form, message, Divider } from "antd";
+import { UserOutlined, UploadOutlined } from "@ant-design/icons";
+import { Input, Button, Form, message, Divider, Upload } from "antd";
 import axios from "axios";
 
 const AdminSetup = () => {
@@ -32,21 +32,40 @@ const AdminSetup = () => {
     }));
   };
 
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
+
   const handleSubmit = async () => {
     if (formData.password !== formData.retypePassword) {
       alert("Passwords do not match");
       return;
     }
 
-    const {...postData } = formData;
+    const { avatar, ...postData } = formData;
 
     try {
       setIsLoading(true);
+      const formDataToSend = new FormData();
+      Object.keys(postData).forEach((key) => {
+        formDataToSend.append(key, postData[key]);
+      });
+      if (avatar) {
+        formDataToSend.append("avatar", avatar.file.originFileObj);
+      }
       const response = await axios.post(
         "https://cashify-wzfy.onrender.com/api/v1/admin",
-        postData
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      // localStorage.setItem("data", JSON.stringify(response.data));
       console.log("Response:", response.data);
       message.success(response.data.msg);
       navigate("/");
@@ -118,7 +137,7 @@ const AdminSetup = () => {
       id: "avatar",
       placeholder: "Avatar URL",
       type: "file",
-      value: null,
+      value: formData.avatar,
     },
     {
       id: "password",
@@ -149,20 +168,16 @@ const AdminSetup = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="w-full max-w-2xl shadow-md rounded px-5 pt-4 pb-8 mb-4">
-      <div className='text-center pt-3'>
-      <h2 className="logo-font text-3xl font-semibold text-blue-500 cursor-pointer hover:text-blue-700">
+        <div className="text-center pt-3">
+          <h2 className="logo-font text-3xl font-semibold text-blue-500 cursor-pointer hover:text-blue-700">
             Cashify
           </h2>
-      </div>
+        </div>
         <Form
           onFinish={
             step === Math.ceil(fields.length / 6) ? handleSubmit : handleNext
           }
-          // className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
         >
-          {/* <div className="text-center mb-6">
-            <h1 className="text-2xl">Admin Setup</h1>
-          </div> */}
           <div className="text-center mb-6">
             <h1 className="text-2xl">
               <Divider>Admin Setup</Divider>
@@ -178,6 +193,17 @@ const AdminSetup = () => {
                     visibilityToggle
                     onChange={(e) => handleChange(field.id, e.target.value)}
                   />
+                ) : field.type === "file" ? (
+                  <Upload
+                    name="avatar"
+                    listType="picture"
+                    beforeUpload={() => false}
+                    onChange={(info) => handleChange(field.id, info)}
+                  >
+                    <Button icon={<UploadOutlined />} style={{ width: "100%" }}>
+                      Click to upload
+                    </Button>
+                  </Upload>
                 ) : (
                   <Input
                     id={field.id}
@@ -208,7 +234,6 @@ const AdminSetup = () => {
               className="bg-blue-600"
               htmlType="submit"
               loading={isLoading}
-              // style={{ marginRight: 8 }}
             >
               {step === Math.ceil(fields.length / 6) ? "Submit" : "Next"}
             </Button>
@@ -219,7 +244,7 @@ const AdminSetup = () => {
             </Link>
           </div>
           <div className="mt-5 text-center">
-          <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
+            <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
           </div>
         </Form>
       </div>
