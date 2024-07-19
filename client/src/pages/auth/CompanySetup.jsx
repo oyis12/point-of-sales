@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, Form, message, Divider } from "antd";
+import { Input, Button, Form, message, Divider, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const CompanySetup = () => {
@@ -18,6 +19,15 @@ const CompanySetup = () => {
     country: "",
     avatar: null,
   });
+
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
+
   const fields = [
     {
       id: "name",
@@ -43,21 +53,21 @@ const CompanySetup = () => {
     {
       id: "house_number",
       label: "House number",
-      placeholder: "house number",
+      placeholder: "House number",
       type: "text",
       value: formData.house_number,
     },
     {
       id: "street",
-      label: "street",
+      label: "Street",
       placeholder: "Street",
       type: "text",
       value: formData.street,
     },
     {
       id: "landmark",
-      label: "Land mark",
-      placeholder: "land mark",
+      label: "Landmark",
+      placeholder: "Landmark",
       type: "text",
       value: formData.landmark,
     },
@@ -71,7 +81,7 @@ const CompanySetup = () => {
     {
       id: "city",
       label: "City",
-      placeholder: "city",
+      placeholder: "City",
       type: "text",
       value: formData.city,
     },
@@ -126,20 +136,28 @@ const CompanySetup = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const { ...postData } = formData;
+    const { avatar, ...postData } = formData;
 
     try {
+      const formDataToSend = new FormData();
+      Object.keys(postData).forEach((key) => {
+        formDataToSend.append(key, postData[key]);
+      });
+      if (avatar) {
+        formDataToSend.append("avatar", avatar.file.originFileObj);
+      }
       const response = await axios.post(
         "https://cashify-wzfy.onrender.com/api/v1/company",
-        postData,
+        formDataToSend,
         {
           headers: {
+            "Content-Type": "multipart/form-data",
             "X-Requested-With": "XMLHttpRequest",
-            token,
+            Authorization: token,
           },
         }
       );
-      //console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       message.success(response.data.msg);
       navigate("/dashboard");
     } catch (error) {
@@ -171,9 +189,8 @@ const CompanySetup = () => {
         </div>
         <Form
           onFinish={
-            step === Math.ceil(fields.length / 3) ? handleSubmit : handleNext
+            step === Math.ceil(fields.length / 4) ? handleSubmit : handleNext
           }
-          // className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
         >
           <div className="text-center mb-6">
             <h1 className="text-2xl">
@@ -183,15 +200,26 @@ const CompanySetup = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {currentFields.map((field) => (
               <div key={field.id} className="flex flex-col mb-3">
-                <Input
-                  id={field.id}
-                  placeholder={field.placeholder}
-                  type={field.type}
-                  value={field.value}
-                  prefix={field.prefix}
-                  allowClear
-                  onChange={(e) => handleChange(field.id, e.target.value)}
-                />
+                {field.type === "file" ? (
+                  <Upload
+                    name="avatar"
+                    listType="picture"
+                    beforeUpload={() => false}
+                    onChange={(info) => handleChange(field.id, info)}
+                    style={{ width: '100%' }}
+                  >
+                    <Button icon={<UploadOutlined /> } style={{ width: "100%" }}>Click to upload</Button>
+                  </Upload>
+                ) : (
+                  <Input
+                    id={field.id}
+                    placeholder={field.placeholder}
+                    type={field.type}
+                    value={field.value}
+                    allowClear
+                    onChange={(e) => handleChange(field.id, e.target.value)}
+                  />
+                )}
               </div>
             ))}
           </div>
