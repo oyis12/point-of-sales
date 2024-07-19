@@ -17,7 +17,7 @@ const CompanySetup = () => {
     landmark: "",
     city: "",
     country: "",
-    avatar: null,
+    logo: null,
   });
 
   const normFile = (e) => {
@@ -90,7 +90,7 @@ const CompanySetup = () => {
       label: "Avatar",
       placeholder: "Upload avatar",
       type: "file",
-      value: formData.avatar,
+      value: formData.logo,
     },
   ];
 
@@ -141,11 +141,17 @@ const CompanySetup = () => {
     try {
       const formDataToSend = new FormData();
       Object.keys(postData).forEach((key) => {
-        formDataToSend.append(key, postData[key]);
+        if (['house_number', 'street', 'landmark', 'city', 'country'].includes(key)) {
+          formDataToSend.append(`address[${key}]`, postData[key]);
+        } else {
+          formDataToSend.append(key, postData[key]);
+        }
       });
       if (avatar) {
-        formDataToSend.append("avatar", avatar.file.originFileObj);
+        formDataToSend.append("logo", avatar.file.originFileObj);
       }
+      formDataToSend.append("admins", storedUserData._id); // Assuming the admin ID is stored in the user data
+
       const response = await axios.post(
         "https://cashify-wzfy.onrender.com/api/v1/company",
         formDataToSend,
@@ -157,8 +163,7 @@ const CompanySetup = () => {
           },
         }
       );
-      // console.log("Response:", response.data);
-      message.success(response.data.msg);
+      // message.success(response.data.msg);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error:", error);
@@ -206,9 +211,11 @@ const CompanySetup = () => {
                     listType="picture"
                     beforeUpload={() => false}
                     onChange={(info) => handleChange(field.id, info)}
-                    style={{ width: '100%' }}
+                    style={{ width: "100%" }}
                   >
-                    <Button icon={<UploadOutlined /> } style={{ width: "100%" }}>Click to upload</Button>
+                    <Button icon={<UploadOutlined />} style={{ width: "100%" }}>
+                      Click to upload
+                    </Button>
                   </Upload>
                 ) : (
                   <Input
