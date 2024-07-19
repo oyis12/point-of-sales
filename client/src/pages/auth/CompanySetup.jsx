@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import  { useState, useEffect,useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, Form, message, Divider, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Input, Button, Form, message, Divider } from "antd";
 import axios from "axios";
 
 const CompanySetup = () => {
@@ -17,17 +16,8 @@ const CompanySetup = () => {
     landmark: "",
     city: "",
     country: "",
-    logo: null,
+    avatar: null,
   });
-
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
-
   const fields = [
     {
       id: "name",
@@ -53,21 +43,21 @@ const CompanySetup = () => {
     {
       id: "house_number",
       label: "House number",
-      placeholder: "House number",
+      placeholder: "house number",
       type: "text",
       value: formData.house_number,
     },
     {
       id: "street",
-      label: "Street",
+      label: "street",
       placeholder: "Street",
       type: "text",
       value: formData.street,
     },
     {
       id: "landmark",
-      label: "Landmark",
-      placeholder: "Landmark",
+      label: "Land mark",
+      placeholder: "land mark",
       type: "text",
       value: formData.landmark,
     },
@@ -81,7 +71,7 @@ const CompanySetup = () => {
     {
       id: "city",
       label: "City",
-      placeholder: "City",
+      placeholder: "city",
       type: "text",
       value: formData.city,
     },
@@ -90,7 +80,7 @@ const CompanySetup = () => {
       label: "Avatar",
       placeholder: "Upload avatar",
       type: "file",
-      value: formData.logo,
+      value: formData.avatar,
     },
   ];
 
@@ -101,76 +91,61 @@ const CompanySetup = () => {
     }));
   };
 
-  const navigate = useNavigate();
+  const navigate= useNavigate()
   const prevStoredUserData = useRef(null);
-  const currentYear = new Date().getFullYear();
 
   const storedUserData = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
-  console.log(storedToken);
+  console.log(storedToken)
 
-  useEffect(() => {
+  useEffect(()=>{
     const checkUserDataAndNavigate = () => {
-      if (storedUserData !== prevStoredUserData.current) {
-        prevStoredUserData.current = storedUserData;
-        if (storedUserData && storedUserData.company) {
-          const dataObj = storedUserData.company;
-          if (Object.keys(dataObj).length !== 0) {
-            navigate("/dashboard");
-          } else {
-            navigate("/company-setup");
-          }
-        } else {
-          console.error("Stored user data is undefined or null.");
-        }
+   if (storedUserData !== prevStoredUserData.current) {
+      prevStoredUserData.current = storedUserData;
+    if (storedUserData && storedUserData.company) {
+      const dataObj = storedUserData.company;
+      if (Object.keys(dataObj).length !== 0) {
+        navigate("/dashboard");
+      } else {
+        navigate("/company-setup");
       }
-    };
-    checkUserDataAndNavigate();
-    return () => {
-      // Clean-up function to prevent memory leaks
-      prevStoredUserData.current = null;
-    };
-  }, [navigate]);
-
+    
+    }else {
+      console.error("Stored user data is undefined or null.");
+    }
+  }
+}
+checkUserDataAndNavigate();
+return () => {
+  // Clean-up function to prevent memory leaks
+  prevStoredUserData.current = null;
+};
+  },[navigate])
+  
   const token = `bearer ${storedToken}`;
 
-  const handleSubmit = async () => {
+
+  const handleSubmit = async() => {
     setIsLoading(true);
-    const { avatar, ...postData } = formData;
+    const {...postData } = formData;
 
     try {
-      const formDataToSend = new FormData();
-      Object.keys(postData).forEach((key) => {
-        if (['house_number', 'street', 'landmark', 'city', 'country'].includes(key)) {
-          formDataToSend.append(`address[${key}]`, postData[key]);
-        } else {
-          formDataToSend.append(key, postData[key]);
+      const response = await axios.post("https://cashify-wzfy.onrender.com/api/v1/company", postData, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          token,
         }
-      });
-      if (avatar) {
-        formDataToSend.append("logo", avatar.file.originFileObj);
-      }
-      formDataToSend.append("admins", storedUserData._id); // Assuming the admin ID is stored in the user data
-
-      const response = await axios.post(
-        "https://cashify-wzfy.onrender.com/api/v1/company",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "X-Requested-With": "XMLHttpRequest",
-            Authorization: token,
-          },
-        }
-      );
-      // message.success(response.data.msg);
+      })
+      //console.log("Response:", response.data);
+      message.success(response.data.msg);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error:", error);
-      message.error("An error occurred. Please try again.");
-    }
+      message.error('An error occurred. Please try again.');
+    }  
     setIsLoading(false);
   };
+
 
   const handleNext = () => {
     setStep((prevStep) => prevStep + 1);
@@ -186,47 +161,28 @@ const CompanySetup = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-2xl shadow-md rounded px-5 pt-4 pb-8 mb-4">
-        <div className="text-center pt-3">
-          <h2 className="logo-font text-3xl font-semibold text-blue-500 cursor-pointer hover:text-blue-700">
-            Cashify
-          </h2>
-        </div>
+      <div className="w-full max-w-2xl">
         <Form
           onFinish={
-            step === Math.ceil(fields.length / 4) ? handleSubmit : handleNext
+            step === Math.ceil(fields.length / 3) ? handleSubmit : handleNext
           }
+          className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
         >
           <div className="text-center mb-6">
-            <h1 className="text-2xl">
-              <Divider>Company Profile Setup</Divider>
-            </h1>
+            <h1 className="text-2xl"><Divider>Company Profile Setup</Divider></h1>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {currentFields.map((field) => (
               <div key={field.id} className="flex flex-col mb-3">
-                {field.type === "file" ? (
-                  <Upload
-                    name="avatar"
-                    listType="picture"
-                    beforeUpload={() => false}
-                    onChange={(info) => handleChange(field.id, info)}
-                    style={{ width: "100%" }}
-                  >
-                    <Button icon={<UploadOutlined />} style={{ width: "100%" }}>
-                      Click to upload
-                    </Button>
-                  </Upload>
-                ) : (
                   <Input
                     id={field.id}
                     placeholder={field.placeholder}
                     type={field.type}
                     value={field.value}
+                    prefix={field.prefix}
                     allowClear
                     onChange={(e) => handleChange(field.id, e.target.value)}
                   />
-                )}
               </div>
             ))}
           </div>
@@ -251,7 +207,7 @@ const CompanySetup = () => {
             </Button>
           </div>
           <div className="mt-5 text-center">
-            <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
+            <p className="text-sky-500 text-xs">&copy;StorePower 2024</p>
           </div>
         </Form>
       </div>
