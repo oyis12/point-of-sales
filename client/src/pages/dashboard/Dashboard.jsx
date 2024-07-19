@@ -17,7 +17,7 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/staffs/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/staffs/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",

@@ -12,7 +12,7 @@ const Details = ({ staffId, supplierId, type }) => {
     setDetails({});
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/staffs/${staffId}/single`,
+        `https://cashify-wzfy.onrender.com/api/v1/staffs/${staffId}/single`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
@@ -31,7 +31,7 @@ const Details = ({ staffId, supplierId, type }) => {
     setDetails({});
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/suppliers/${supplierId}/single`,
+        `https://cashify-wzfy.onrender.com/api/v1/suppliers/${supplierId}/single`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",

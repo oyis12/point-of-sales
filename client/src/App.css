@@ -57,3 +57,11 @@ td {
 textarea {
   resize: none !important; /* Disable resizing */
 }
+label{
+  font-size: .8rem !important;
+  font-weight: 600 !important;
+  margin: -5px !important;
+}
+.logo-font{
+  font-family: "Edu AU VIC WA NT Hand", cursive;
+}

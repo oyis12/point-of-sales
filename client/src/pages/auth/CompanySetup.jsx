@@ -1,4 +1,4 @@
-import  { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, Form, message, Divider } from "antd";
 import axios from "axios";
@@ -91,61 +91,63 @@ const CompanySetup = () => {
     }));
   };
 
-  const navigate= useNavigate()
+  const navigate = useNavigate();
   const prevStoredUserData = useRef(null);
+  const currentYear = new Date().getFullYear();
 
   const storedUserData = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
-  console.log(storedToken)
+  console.log(storedToken);
 
-  useEffect(()=>{
+  useEffect(() => {
     const checkUserDataAndNavigate = () => {
-   if (storedUserData !== prevStoredUserData.current) {
-      prevStoredUserData.current = storedUserData;
-    if (storedUserData && storedUserData.company) {
-      const dataObj = storedUserData.company;
-      if (Object.keys(dataObj).length !== 0) {
-        navigate("/dashboard");
-      } else {
-        navigate("/company-setup");
+      if (storedUserData !== prevStoredUserData.current) {
+        prevStoredUserData.current = storedUserData;
+        if (storedUserData && storedUserData.company) {
+          const dataObj = storedUserData.company;
+          if (Object.keys(dataObj).length !== 0) {
+            navigate("/dashboard");
+          } else {
+            navigate("/company-setup");
+          }
+        } else {
+          console.error("Stored user data is undefined or null.");
+        }
       }
-    
-    }else {
-      console.error("Stored user data is undefined or null.");
-    }
-  }
-}
-checkUserDataAndNavigate();
-return () => {
-  // Clean-up function to prevent memory leaks
-  prevStoredUserData.current = null;
-};
-  },[navigate])
-  
+    };
+    checkUserDataAndNavigate();
+    return () => {
+      // Clean-up function to prevent memory leaks
+      prevStoredUserData.current = null;
+    };
+  }, [navigate]);
+
   const token = `bearer ${storedToken}`;
 
-
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     setIsLoading(true);
-    const {...postData } = formData;
+    const { ...postData } = formData;
 
     try {
-      const response = await axios.post("https://pos-wpvg.onrender.com/api/v1/company", postData, {
-        headers: {
-          "X-Requested-With": "XMLHttpRequest",
-          token,
+      const response = await axios.post(
+        "https://cashify-wzfy.onrender.com/api/v1/company",
+        postData,
+        {
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            token,
+          },
         }
-      })
+      );
       //console.log("Response:", response.data);
       message.success(response.data.msg);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error:", error);
-      message.error('An error occurred. Please try again.');
-    }  
+      message.error("An error occurred. Please try again.");
+    }
     setIsLoading(false);
   };
-
 
   const handleNext = () => {
     setStep((prevStep) => prevStep + 1);
@@ -161,28 +163,35 @@ return () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl shadow-md rounded px-5 pt-4 pb-8 mb-4">
+        <div className="text-center pt-3">
+          <h2 className="logo-font text-3xl font-semibold text-blue-500 cursor-pointer hover:text-blue-700">
+            Cashify
+          </h2>
+        </div>
         <Form
           onFinish={
             step === Math.ceil(fields.length / 3) ? handleSubmit : handleNext
           }
-          className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
+          // className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
         >
           <div className="text-center mb-6">
-            <h1 className="text-2xl"><Divider>Company Profile Setup</Divider></h1>
+            <h1 className="text-2xl">
+              <Divider>Company Profile Setup</Divider>
+            </h1>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {currentFields.map((field) => (
               <div key={field.id} className="flex flex-col mb-3">
-                  <Input
-                    id={field.id}
-                    placeholder={field.placeholder}
-                    type={field.type}
-                    value={field.value}
-                    prefix={field.prefix}
-                    allowClear
-                    onChange={(e) => handleChange(field.id, e.target.value)}
-                  />
+                <Input
+                  id={field.id}
+                  placeholder={field.placeholder}
+                  type={field.type}
+                  value={field.value}
+                  prefix={field.prefix}
+                  allowClear
+                  onChange={(e) => handleChange(field.id, e.target.value)}
+                />
               </div>
             ))}
           </div>
@@ -207,7 +216,7 @@ return () => {
             </Button>
           </div>
           <div className="mt-5 text-center">
-            <p className="text-sky-500 text-xs">&copy;StorePower 2024</p>
+          <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
           </div>
         </Form>
       </div>

@@ -174,7 +174,7 @@ const Users = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/staffs/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/staffs/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
@@ -266,7 +266,7 @@ const Users = () => {
     setSelectedStaffId(userID);
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/stores/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/stores/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
@@ -350,7 +350,7 @@ const Users = () => {
     try {
       const { id, ...requestData } = formData;
       const response = await axios.put(
-        `https://pos-wpvg.onrender.com/api/v1/staffs/${staffID}/update`,
+        `https://cashify-wzfy.onrender.com/api/v1/staffs/${staffID}/update`,
         requestData,
         {
           headers: {
