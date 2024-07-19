@@ -10,6 +10,7 @@ const Login = () => {
   const [position] = useState('start');
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const currentYear = new Date().getFullYear()
 
   const fields = [
     {
@@ -72,8 +73,9 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-96">
-        <Form onFinish={handleSubmit} className="shadow-md rounded px-5 pt-4 pb-8 mb-4">
+      <div className="w-full max-w-96 shadow-md rounded px-5 pt-4 pb-8 mb-4">
+        <h2 className="logo-font text-center font-semibold text-2xl text-blue-600 hover:text-blue-700">Cashify</h2>
+        <Form onFinish={handleSubmit}>
           <div className="text-center mb-6">
             <h1 className="text-2xl">
               <Divider>Login</Divider>
@@ -146,7 +148,7 @@ const Login = () => {
             </Link>
           </div>
           <div className="mt-5 text-center">
-            <p className="text-sky-500 text-xs">&copy;StorePower 2024</p>
+            <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
           </div>
         </Form>
       </div>

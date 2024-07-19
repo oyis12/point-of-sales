@@ -1,6 +1,7 @@
 import  { useState, useEffect,useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, Form, message, Divider } from "antd";
+import { Input, Button, Form, message, Divider, Upload } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
 import axios from "axios";
 
 const CompanySetup = () => {
@@ -91,8 +92,17 @@ const CompanySetup = () => {
     }));
   };
 
+  const normFile = (e) => {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
+
   const navigate= useNavigate()
   const prevStoredUserData = useRef(null);
+  const currentYear = new Date().getFullYear()
 
   const storedUserData = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
@@ -161,12 +171,14 @@ return () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl shadow-md rounded px-5 pt-4 pb-8 mb-4">
+      <h2 className="logo-font text-center font-semibold text-2xl text-blue-600 hover:text-blue-700">Cashify</h2>
+
         <Form
           onFinish={
             step === Math.ceil(fields.length / 3) ? handleSubmit : handleNext
           }
-          className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
+          // className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
         >
           <div className="text-center mb-6">
             <h1 className="text-2xl"><Divider>Company Profile Setup</Divider></h1>
@@ -174,15 +186,25 @@ return () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {currentFields.map((field) => (
               <div key={field.id} className="flex flex-col mb-3">
-                  <Input
-                    id={field.id}
-                    placeholder={field.placeholder}
-                    type={field.type}
-                    value={field.value}
-                    prefix={field.prefix}
-                    allowClear
-                    onChange={(e) => handleChange(field.id, e.target.value)}
-                  />
+                { field.type === "file" ? (
+                  <Upload
+                    name={field.id}
+                    action="/upload.do"
+                    listType="picture"
+                    onChange={(info) => normFile(field.id, info)}
+                  >
+                    <Button icon={<UploadOutlined />} style={{width: '100%'}}>Click to upload</Button>
+                  </Upload>
+                ) : (<Input
+                  id={field.id}
+                  placeholder={field.placeholder}
+                  type={field.type}
+                  value={field.value}
+                  prefix={field.prefix}
+                  allowClear
+                  onChange={(e) => handleChange(field.id, e.target.value)}
+                />)}
+                  
               </div>
             ))}
           </div>
@@ -207,7 +229,7 @@ return () => {
             </Button>
           </div>
           <div className="mt-5 text-center">
-            <p className="text-sky-500 text-xs">&copy;StorePower 2024</p>
+          <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
           </div>
         </Form>
       </div>
