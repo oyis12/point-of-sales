@@ -80,7 +80,7 @@ const CreateStaff = () => {
         ...formData,
       };
       const response = await axios.post(
-        `https://pos-wpvg.onrender.com/api/v1/staffs`,
+        `https://cashify-wzfy.onrender.com/api/v1/staffs`,
         requestData,
         {
           headers: {

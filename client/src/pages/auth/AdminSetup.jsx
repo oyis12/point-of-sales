@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
-import { Input, Button, Form, message } from "antd";
+import { Input, Button, Form, message, Divider } from "antd";
 import axios from "axios";
 
 const AdminSetup = () => {
@@ -23,6 +23,7 @@ const AdminSetup = () => {
   });
 
   const navigate = useNavigate();
+  const currentYear = new Date().getFullYear();
 
   const handleChange = (id, value) => {
     setFormData((prevFormData) => ({
@@ -42,7 +43,7 @@ const AdminSetup = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        "https://pos-wpvg.onrender.com/api/v1/admin",
+        "https://cashify-wzfy.onrender.com/api/v1/admin",
         postData
       );
       // localStorage.setItem("data", JSON.stringify(response.data));
@@ -147,15 +148,25 @@ const AdminSetup = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl shadow-md rounded px-5 pt-4 pb-8 mb-4">
+      <div className='text-center pt-3'>
+      <h2 className="logo-font text-3xl font-semibold text-blue-500 cursor-pointer hover:text-blue-700">
+            Cashify
+          </h2>
+      </div>
         <Form
           onFinish={
             step === Math.ceil(fields.length / 6) ? handleSubmit : handleNext
           }
-          className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
+          // className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
         >
-          <div className="text-center mb-6">
+          {/* <div className="text-center mb-6">
             <h1 className="text-2xl">Admin Setup</h1>
+          </div> */}
+          <div className="text-center mb-6">
+            <h1 className="text-2xl">
+              <Divider>Admin Setup</Divider>
+            </h1>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {currentFields.map((field) => (
@@ -208,7 +219,7 @@ const AdminSetup = () => {
             </Link>
           </div>
           <div className="mt-5 text-center">
-            <p className="text-sky-500 text-xs">&copy;StorePower 2024</p>
+          <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
           </div>
         </Form>
       </div>

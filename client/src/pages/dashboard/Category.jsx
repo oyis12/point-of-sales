@@ -136,7 +136,7 @@ const Category = () => {
         ...formData,
       };
       const response = await axios.post(
-        `https://pos-wpvg.onrender.com/api/v1/categories`,
+        `https://cashify-wzfy.onrender.com/api/v1/categories`,
         requestData,
         {
           headers: {
@@ -166,7 +166,7 @@ const Category = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/categories/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/categories/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",

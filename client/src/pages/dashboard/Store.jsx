@@ -48,7 +48,7 @@ const Store = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/stores/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/stores/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
@@ -85,7 +85,7 @@ const Store = () => {
         ...formData,
       };
       const response = await axios.post(
-        `https://pos-wpvg.onrender.com/api/v1/stores`,
+        `https://cashify-wzfy.onrender.com/api/v1/stores`,
         requestData,
         {
           headers: {

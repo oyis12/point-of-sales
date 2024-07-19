@@ -200,7 +200,7 @@ const Product = () => {
   const getCategory = async () => {
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/categories/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/categories/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
@@ -236,7 +236,7 @@ const Product = () => {
       const category_id = form.getFieldValue("category");
 
       const response = await axios.post(
-        `https://pos-wpvg.onrender.com/api/v1/products/${category_id}`,
+        `https://cashify-wzfy.onrender.com/api/v1/products/${category_id}`,
         requestData,
         {
           headers: {
@@ -265,7 +265,7 @@ const Product = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/products/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/products/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
@@ -296,7 +296,7 @@ const Product = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/products/${categoryId}/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/products/${categoryId}/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
@@ -475,6 +475,7 @@ const Product = () => {
               <Form
                 form={form}
                 layout="vertical"
+                className="mb-0"
                 onFinish={handleSubmit} // Assuming handleSubmit handles form submission
               >
                 <Form.Item

@@ -254,7 +254,7 @@ const Suppliers = () => {
         ...formData,
       };
       const response = await axios.post(
-        `https://pos-wpvg.onrender.com/api/v1/suppliers`,
+        `https://cashify-wzfy.onrender.com/api/v1/suppliers`,
         requestData,
         {
           headers: {
@@ -290,7 +290,7 @@ const Suppliers = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://pos-wpvg.onrender.com/api/v1/suppliers/all`,
+        `https://cashify-wzfy.onrender.com/api/v1/suppliers/all`,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",

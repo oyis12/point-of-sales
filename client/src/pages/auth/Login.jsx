@@ -1,15 +1,23 @@
-import { useState, useContext , useEffect} from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Checkbox, Flex, Input, Button, Form, message, Divider } from "antd";
-import { MailOutlined, KeyOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import  AppContext  from "../../context/AppContext.jsx";
+import {
+  MailOutlined,
+  KeyOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+} from "@ant-design/icons";
+import AppContext from "../../context/AppContext.jsx";
 
 const Login = () => {
-  const { authenticate, loginStatus, authError,authToken, user} =  useContext(AppContext); 
+  const { authenticate, loginStatus, authError, authToken, user } =
+    useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [position] = useState('start');
+  const [position] = useState("start");
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
+  const currentYear = new Date().getFullYear();
 
   const fields = [
     {
@@ -26,7 +34,7 @@ const Login = () => {
       placeholder: "Password",
       type: "password",
       value: "",
-    }
+    },
   ];
 
   const [formData, setFormData] = useState(fields);
@@ -43,7 +51,7 @@ const Login = () => {
 
     const userData = {
       email: formData[0].value,
-      password: formData[1].value
+      password: formData[1].value,
     };
 
     // Use the authenticate function from context
@@ -56,31 +64,40 @@ const Login = () => {
     if (loginStatus === "authenticated") {
       message.success("Login successful!");
       const companyObj = user.company;
-      if (Object.keys(companyObj).length === 0 && companyObj.constructor === Object) {
+      if (
+        Object.keys(companyObj).length === 0 &&
+        companyObj.constructor === Object
+      ) {
         navigate("/company-setup");
-      } else  if (user.previleges.includes(114)) {
-        navigate("/cashier/pos")
-      }else{
+      } else if (user.previleges.includes(114)) {
+        navigate("/cashier/pos");
+      } else {
         navigate("/dashboard");
       }
     } else if (loginStatus === "failed" && authError) {
       message.error(authError);
-    } 
+    }
   }, [loginStatus, authError, navigate]);
-
- 
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-96">
-        <Form onFinish={handleSubmit} className="shadow-md rounded px-5 pt-4 pb-8 mb-4">
+      <div className="w-full max-w-96 shadow-md rounded px-5 pt-4 pb-8 mb-4">
+      <div className='text-center pt-3'>
+      <h2 className="logo-font text-3xl font-semibold text-blue-500 cursor-pointer hover:text-blue-700">
+            Cashify
+          </h2>
+      </div>
+        <Form
+          onFinish={handleSubmit}
+          // className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
+        >
           <div className="text-center mb-6">
             <h1 className="text-2xl">
               <Divider>Login</Divider>
             </h1>
           </div>
           <Form.Item>
-            {formData.map((field, index) => (
+            {formData.map((field, index) =>
               field.type === "password" ? (
                 <Input.Password
                   key={field.id}
@@ -93,7 +110,9 @@ const Login = () => {
                   value={field.value}
                   onChange={(e) => handleChange(index, e.target.value)}
                   prefix={<KeyOutlined />}
-                  iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
                   className="mb-4"
                 />
               ) : (
@@ -111,7 +130,7 @@ const Login = () => {
                   className="mb-4"
                 />
               )
-            ))}
+            )}
           </Form.Item>
           <div className="flex justify-between mb-4 items-center">
             <Checkbox className="capitalize">Remember </Checkbox>
@@ -123,7 +142,7 @@ const Login = () => {
             vertical
             gap="small"
             style={{
-              width: '100%',
+              width: "100%",
             }}
           >
             <Button
@@ -135,7 +154,7 @@ const Login = () => {
               loading={isLoading}
               iconposition={position}
               value="end"
-              style={{ outline: 'none' }}
+              style={{ outline: "none" }}
             >
               {isLoading ? "Please wait..." : "Sign in"}
             </Button>
@@ -146,7 +165,7 @@ const Login = () => {
             </Link>
           </div>
           <div className="mt-5 text-center">
-            <p className="text-sky-500 text-xs">&copy;StorePower 2024</p>
+            <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
           </div>
         </Form>
       </div>

@@ -34,7 +34,7 @@ export const AppState = ({ children }) => {
 
   const authenticate = async (email, password) => {
     try {
-      const response = await axios.post('https://pos-wpvg.onrender.com/api/v1/accounts/auth', {
+      const response = await axios.post('https://cashify-wzfy.onrender.com/api/v1/accounts/auth', {
         email,
         password
       });
@@ -120,7 +120,7 @@ export const AppState = ({ children }) => {
 
   useEffect(() => {
     if (state.user) {
-      console.log('User role:', getRole(state.user));
+      // console.log('User role:', getRole(state.user));
     }
   }, [state.user]);
 
