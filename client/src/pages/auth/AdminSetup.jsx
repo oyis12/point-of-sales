@@ -42,7 +42,7 @@ const AdminSetup = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        "https://pos-wpvg.onrender.com/api/v1/admin",
+        "https://cashify-wzfy.onrender.com/api/v1/admin",
         postData
       );
       // localStorage.setItem("data", JSON.stringify(response.data));
