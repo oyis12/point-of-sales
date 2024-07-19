@@ -216,7 +216,7 @@ const CompanySetup = () => {
             </Button>
           </div>
           <div className="mt-5 text-center">
-          <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
+            <p className="text-sky-500 text-xs">&copy; Cashify {currentYear}</p>
           </div>
         </Form>
       </div>
