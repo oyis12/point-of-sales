@@ -1,4 +1,4 @@
-import  { useState, useEffect,useRef } from "react";
+import  { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, Form, message, Divider, Upload } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
@@ -6,6 +6,7 @@ import axios from "axios";
 
 const CompanySetup = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { authenticate, loginStatus, authError,authToken, user} =  useContext(AppContext); 
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
@@ -104,8 +105,8 @@ const CompanySetup = () => {
   const prevStoredUserData = useRef(null);
   const currentYear = new Date().getFullYear()
 
-  const storedUserData = JSON.parse(localStorage.getItem("user"));
-  const storedToken = localStorage.getItem("token");
+  const storedUserData = user
+  const storedToken = authToken
   console.log(storedToken)
 
   useEffect(()=>{
