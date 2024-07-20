@@ -130,7 +130,7 @@ const CompanySetup = () => {
 checkUserDataAndNavigate();
 return () => {
   // Clean-up function to prevent memory leaks
-  prevStoredUserData.current = null;
+  prevStoredUserData.current = null
 };
   },[navigate])
   
