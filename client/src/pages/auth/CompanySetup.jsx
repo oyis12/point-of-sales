@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Input, Button, Form, message, Divider, Upload } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 import axios from "axios";
+import  AppContext  from "../../context/AppContext.jsx";
 
 const CompanySetup = () => {
   const [isLoading, setIsLoading] = useState(false);
