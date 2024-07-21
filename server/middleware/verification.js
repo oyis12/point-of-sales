@@ -43,7 +43,8 @@ export const isCompanyStaff = async (req, res, next) => {
         || req?.user?.company?.id !== company_data?.id
 
         || ((
-            req?.user?.previleges.includes(112)
+            req?.user?.previleges.includes(111)
+            || req?.user?.previleges.includes(112)
             || req?.user?.previleges.includes(113)
             || req.user?.previleges.includes(114))
             && req.user?.status !== "active")) {
