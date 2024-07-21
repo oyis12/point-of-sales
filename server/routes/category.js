@@ -6,12 +6,12 @@ import staff from "../models/staff.js";
 import store from "../models/store.js";
 import company from "../models/company.js";
 import category from "../models/category.js";
-import verifyToken, { isCompanyStaff, isStockManager, isAdminOrStockManager } from "../middleware/verification.js";
+import verifyToken, { isCompanyStaff, isStockManager } from "../middleware/verification.js";
 
 const router = express.Router();
 
 // create products category for a company===
-router.post("/categories", verifyToken, isStockManager,isAdminOrStockManager, async (req, res) => {
+router.post("/categories", verifyToken, isStockManager, async (req, res) => {
   const {
     name,
     description,

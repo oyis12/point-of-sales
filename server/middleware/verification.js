@@ -123,7 +123,7 @@ export const isStockManager = async (req, res, next) => {
             code: 603,
         })
     );
-    if (!req.user?.previleges.includes(112) || req.user?.company?.id !== company_data?.id) {
+    if (!req.user?.previleges.includes(112) || !req.user?.previleges.includes(111) || req.user?.company?.id !== company_data?.id) {
         return next(
             res.status(403).json({
                 msg: "you're NOT authorized to take this action, contact the stock manager",
