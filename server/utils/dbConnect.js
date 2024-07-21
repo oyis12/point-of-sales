@@ -28,10 +28,7 @@ if (!cached) {
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
-      useNewUrlParser:true,
-      useUnifiedTopology:true,
-      // useCreateIndex:true
+      bufferCommands: false
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
