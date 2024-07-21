@@ -379,7 +379,7 @@ const CompanySetup = () => {
 
     try {
       const response = await axios.post(
-        "https://cashify-wzfy.onrender.com/api/v1/accounts/create-company",
+        "https://cashify-wzfy.onrender.com/api/v1/accounts/company",
         {
           name: formData.name,
           phone: formData.phone,
