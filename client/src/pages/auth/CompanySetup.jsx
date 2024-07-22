@@ -257,11 +257,11 @@ const CompanySetup = () => {
         message.success("Company created successfully");
         //navigate("/dashboard");
 
-            // Update user data in context
-            updateUser({
-              ...user,
-              company: response.data.company // Ensure this matches the response structure
-            });
+             // Update user data in context
+        updateUser({
+          ...user,
+          company: response.data.company // Ensure this matches the response structure
+        });
   
           hasNavigated.current = true; // Set navigation flag to true
           navigate("/dashboard");
