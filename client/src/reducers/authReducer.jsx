@@ -25,6 +25,11 @@ export const initialState = {
           clearance: action.payload.user.clearance,
           authError: null
         };
+        case "UPDATE_USER":
+          return {
+            ...state,
+            user: action.payload,
+          };
       case "LOGIN_FAILURE":
         return {
           ...state,

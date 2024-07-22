@@ -7,7 +7,7 @@ import AppContext from "../../context/AppContext.jsx";
 
 const CompanySetup = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { authenticate, loginStatus, authError, authToken, user } = useContext(AppContext); 
+  const { updateUser, authToken, user } = useContext(AppContext); 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
@@ -110,6 +110,7 @@ const CompanySetup = () => {
 
   const storedUserData = user
   const storedToken = authToken
+  const hasNavigated = useRef(false);
   //console.log(storedToken)
 
 //   useEffect(()=>{
@@ -152,7 +153,11 @@ const CompanySetup = () => {
         }
       }
     };
-    checkUserDataAndNavigate();
+
+    if (!hasNavigated.current) {
+      checkUserDataAndNavigate();
+    }
+    //checkUserDataAndNavigate();
     return () => {
       prevStoredUserData.current = storedUserData;
     };
@@ -250,7 +255,16 @@ const CompanySetup = () => {
 
       if (response.status === 200 || response.status === 201) {
         message.success("Company created successfully");
-        navigate("/dashboard");
+        //navigate("/dashboard");
+
+            // Update user data in context
+            updateUser({
+              ...user,
+              company: response.data.company // Ensure this matches the response structure
+            });
+  
+          hasNavigated.current = true; // Set navigation flag to true
+          navigate("/dashboard");
       } else {
         message.error(`Failed to create company: ${response.data.message}`);
       }

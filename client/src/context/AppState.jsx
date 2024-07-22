@@ -209,6 +209,13 @@ export const AppState = ({ children }) => {
     }, 100);
   };
 
+  const updateUser = (userData) => {
+    dispatch({
+      type: "UPDATE_USER",
+      payload: userData,
+    });
+  };
+
   const getRole = (user) => {
     if (!user || !user.previleges) return null;
     if (user.previleges.includes(111)) return 'owner';
@@ -272,7 +279,8 @@ export const AppState = ({ children }) => {
     logout,
     getRole,
     handleToggle,
-    formatDate
+    formatDate,
+    updateUser
   };
 
   return (
