@@ -20,71 +20,6 @@ const CompanySetup = () => {
     country: "",
     avatar: null,
   });
-  // const fields = [
-  //   {
-  //     id: "name",
-  //     label: "Company Name",
-  //     placeholder: "Company Name",
-  //     type: "text",
-  //     value: formData.name,
-  //   },
-  //   {
-  //     id: "phone",
-  //     label: "Phone",
-  //     placeholder: "Phone",
-  //     type: "text",
-  //     value: formData.phone,
-  //   },
-  //   {
-  //     id: "email",
-  //     label: "Email",
-  //     placeholder: "example@gmail.com",
-  //     type: "email",
-  //     value: formData.email,
-  //   },
-  //   {
-  //     id: "house_number",
-  //     label: "House number",
-  //     placeholder: "house number",
-  //     type: "text",
-  //     value: formData.house_number,
-  //   },
-  //   {
-  //     id: "street",
-  //     label: "street",
-  //     placeholder: "Street",
-  //     type: "text",
-  //     value: formData.street,
-  //   },
-  //   {
-  //     id: "landmark",
-  //     label: "Land mark",
-  //     placeholder: "land mark",
-  //     type: "text",
-  //     value: formData.landmark,
-  //   },
-  //   {
-  //     id: "country",
-  //     label: "Country",
-  //     placeholder: "Country",
-  //     type: "text",
-  //     value: formData.country,
-  //   },
-  //   {
-  //     id: "city",
-  //     label: "City",
-  //     placeholder: "city",
-  //     type: "text",
-  //     value: formData.city,
-  //   },
-  //   {
-  //     id: "avatar",
-  //     label: "Avatar",
-  //     placeholder: "Upload avatar",
-  //     type: "file",
-  //     value: formData.avatar,
-  //   },
-  // ];
 
   const fields = [
     {
@@ -152,12 +87,6 @@ const CompanySetup = () => {
     },
   ];
 
-  // const handleChange = (id, value) => {
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     [id]: value,
-  //   }));
-  // };
 
   const handleChange = (id, value) => {
     setFormData((prevFormData) => ({
@@ -166,14 +95,6 @@ const CompanySetup = () => {
     }));
   };
 
-
-  // const normFile = (e) => {
-  //   console.log('Upload event:', e);
-  //   if (Array.isArray(e)) {
-  //     return e;
-  //   }
-  //   return e?.fileList;
-  // };
 
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -262,6 +183,44 @@ const CompanySetup = () => {
   // };
 
 
+  // const handleSubmit = async () => {
+  //   setIsLoading(true);
+
+  //   try {
+  //     const response = await axios.post(
+  //       "https://cashify-wzfy.onrender.com/api/v1/company",
+  //       {
+  //         name: formData.name,
+  //         phone: formData.phone,
+  //         email: formData.email,
+  //         house_number: formData.house_number,
+  //         street: formData.street,
+  //         landmark: formData.landmark,
+  //         city: formData.city,
+  //         country: formData.country,
+  //       },
+  //       {
+  //         headers: {
+  //           "Authorization": `Bearer ${storedToken}`,
+  //           "Content-Type": "application/json"
+  //         }
+  //       }
+  //     );
+
+  //     if (response.status === 200) {
+  //       message.success("Company created successfully");
+  //       navigate("/dashboard");
+  //     } else {
+  //       message.error("Failed to create company. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during company creation:", error);
+  //     message.error("Failed to create company. Please try again.");
+  //   }
+
+  //   setIsLoading(false);
+  // };
+
   const handleSubmit = async () => {
     setIsLoading(true);
 
@@ -286,15 +245,18 @@ const CompanySetup = () => {
         }
       );
 
-      if (response.status === 200) {
+      console.log("Response status:", response.status);
+      console.log("Response data:", response.data);
+
+      if (response.status === 200 || response.status === 201) {
         message.success("Company created successfully");
         navigate("/dashboard");
       } else {
-        message.error("Failed to create company. Please try again.");
+        message.error(`Failed to create company: ${response.data.message}`);
       }
     } catch (error) {
       console.error("Error during company creation:", error);
-      message.error("Failed to create company. Please try again.");
+      message.error(`Failed to create company: ${error.response ? error.response.data.message : error.message}`);
     }
 
     setIsLoading(false);
