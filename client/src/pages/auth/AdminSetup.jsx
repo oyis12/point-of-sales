@@ -56,7 +56,6 @@ const AdminSetup = () => {
         "https://cashify-wzfy.onrender.com/api/v1/admin",
         postData
       );
-      // localStorage.setItem("data", JSON.stringify(response.data));
       console.log("Response:", response.data);
       message.success(response.data.msg);
       navigate("/");
@@ -164,7 +163,6 @@ const AdminSetup = () => {
           onFinish={
             step === Math.ceil(fields.length / 6) ? handleSubmit : handleNext
           }
-          // className="shadow-md rounded px-5 pt-4 pb-8 mb-4"
         >
           <div className="text-center mb-6">
             <h1 className="text-2xl">
