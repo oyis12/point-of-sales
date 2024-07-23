@@ -4,13 +4,14 @@ import category from "../models/category.js";
 import product from "../models/product.js";
 import product_variation from "../models/product_variation.js";
 import supplier from "../models/supplier.js";
+import { upload, uploadToCloudinary } from '../utils/upload.js'
 
 const router = express.Router();
 
 const filtered_fields = '-createdAt -updatedAt -__v';
 
 // create products for a company===
-router.post("/products/:category_id", verify, isAdminOrStockManager, async (req, res) => {
+router.post("/products/:category_id", verify, isStockManager, async (req, res) => {
   const {
     name,
     product_type,
@@ -67,7 +68,7 @@ router.post("/products/:category_id", verify, isAdminOrStockManager, async (req,
 })
 
 // create product variations for a company===
-router.post("/products/:product_id/variation", verify, isAdminOrStockManager, async (req, res) => {
+router.post("/products/:product_id/variation", verify, isStockManager,upload.single('image'), async (req, res) => {
   const {
   image,
   size,
@@ -95,9 +96,16 @@ router.post("/products/:product_id/variation", verify, isAdminOrStockManager, as
       type: "NOT_EXIST",
       code: 603,
     });
+
+    let image_url = '';
+    if (req.file) {
+      image_url = await uploadToCloudinary(req.file);
+    }
     // const { _id: prod_key } = product_data
     // ```categories: { $in: [cat_key]```====>used to check if cat is found in the categories array
-    const check_for_variation = await product_variation.findOne({ product:product_data?._id,size,
+    const check_for_variation = await product_variation.findOne({ 
+      product:product_data?._id,
+      size,
       color,
       weight,
       alias,
@@ -113,7 +121,8 @@ router.post("/products/:product_id/variation", verify, isAdminOrStockManager, as
     const new_variation = new product_variation({
            variation_id:var_id,
             product:product_data?._id,
-            image:image?image:undefined,
+            image: image?image_url:undefined,
+           // image:image_url,
             size:size?size:undefined,
             color:color?color:undefined,
             weight:weight?weight:undefined,
