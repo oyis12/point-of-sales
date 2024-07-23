@@ -287,7 +287,7 @@ const Category = () => {
               </Form>
             </Modal>
 
-            {isLoading || dataSource.length === 0 ? (
+            {isLoading ? (
               <div className="flex justify-center items-center h-96">
                 <Ring />
               </div>
