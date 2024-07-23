@@ -23,7 +23,7 @@ const Product = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [form] = Form.useForm();
-  const { authToken } = useContext(AppContext);
+  const { authToken, user } = useContext(AppContext);
 
   const fields = [
     {
@@ -354,7 +354,6 @@ const Product = () => {
           onChange={handleCategoryChange}
           options={[{ value: "all", label: "All Categories" }, ...options]}
         />
-
         <div>
           <Button
             type="button"
@@ -480,7 +479,7 @@ const Product = () => {
               >
                 <Form.Item
                   name="category"
-                  label="Category"
+                  // label="Category"
                   rules={[
                     { required: true, message: "Please select a category" },
                   ]}
@@ -496,7 +495,7 @@ const Product = () => {
                   <Form.Item
                     key={field.id}
                     name={field.id}
-                    label={field.label}
+                    // label={field.label}
                     rules={[
                       {
                         required: true,
@@ -522,55 +521,55 @@ const Product = () => {
 
             {/* variation */}
             <Modal
-      title="Add Product Variation"
-      open={openVariation}
-      onCancel={closeModal}
-      footer={[
-        <Button
-          key="submit"
-          type="primary"
-          loading={isLoading}
-          onClick={handleSubmit}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-        >
-          Add
-        </Button>,
-      ]}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit} // Assuming handleSubmit handles form submission
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
-        {variation.map((field) => (
-          <Form.Item
-            key={field.id}
-            name={field.id}
-            label={field.label}
-            rules={[
-              {
-                required: true,
-                message: `Please enter ${field.label.toLowerCase()}`,
-              },
-            ]}
-            className="col-span-1"
-          >
-            {field.type === "textarea" ? (
-              <Input.TextArea
-                placeholder={field.placeholder}
-                className={field.className || "textarea"}
-              />
-            ) : (
-              <Input
-                placeholder={field.placeholder}
-                type={field.type}
-              />
-            )}
-          </Form.Item>
-        ))}
-      </Form>
-    </Modal>
+              title="Add Product Variation"
+              open={openVariation}
+              onCancel={closeModal}
+              footer={[
+                <Button
+                  key="submit"
+                  type="primary"
+                  loading={isLoading}
+                  onClick={handleSubmit}
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                >
+                  Add
+                </Button>,
+              ]}
+            >
+              <Form
+                form={form}
+                layout="vertical"
+                onFinish={handleSubmit} // Assuming handleSubmit handles form submission
+                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+              >
+                {variation.map((field) => (
+                  <Form.Item
+                    key={field.id}
+                    name={field.id}
+                    // label={field.label}
+                    rules={[
+                      {
+                        required: true,
+                        message: `Please enter ${field.label.toLowerCase()}`,
+                      },
+                    ]}
+                    className="col-span-1"
+                  >
+                    {field.type === "textarea" ? (
+                      <Input.TextArea
+                        placeholder={field.placeholder}
+                        className={field.className || "textarea"}
+                      />
+                    ) : (
+                      <Input
+                        placeholder={field.placeholder}
+                        type={field.type}
+                      />
+                    )}
+                  </Form.Item>
+                ))}
+              </Form>
+            </Modal>
 
             {isLoading ? (
               <div className="flex justify-center items-center h-96">
