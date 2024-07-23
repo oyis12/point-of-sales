@@ -4,7 +4,9 @@ import category from "../models/category.js";
 import product from "../models/product.js";
 import product_variation from "../models/product_variation.js";
 import supplier from "../models/supplier.js";
-import { upload, uploadToCloudinary } from '../utils/upload.js'
+import upload from "../utils/upload.js";
+import cloudinary from "../utils/cloudinaryConfig.js";
+
 
 const router = express.Router();
 
@@ -97,9 +99,10 @@ router.post("/products/:product_id/variation", verify, isStockManager,upload.sin
       code: 603,
     });
 
-    let image = '';
+    let image = null;
     if (req.file) {
-      image = await uploadToCloudinary(req.file);
+      const result = await cloudinary.uploader.upload(req.file.path);
+      image = result.secure_url;
     }
     // const { _id: prod_key } = product_data
     // ```categories: { $in: [cat_key]```====>used to check if cat is found in the categories array
@@ -121,8 +124,7 @@ router.post("/products/:product_id/variation", verify, isStockManager,upload.sin
     const new_variation = new product_variation({
            variation_id:var_id,
             product:product_data?._id,
-            image:image?image:undefined,
-            //image_url:image,
+            image: image?image:undefined,
             size:size?size:undefined,
             color:color?color:undefined,
             weight:weight?weight:undefined,
