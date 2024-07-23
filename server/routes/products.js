@@ -97,9 +97,9 @@ router.post("/products/:product_id/variation", verify, isStockManager,upload.sin
       code: 603,
     });
 
-    let image_url = '';
+    let image = '';
     if (req.file) {
-      image_url = await uploadToCloudinary(req.file);
+      image = await uploadToCloudinary(req.file);
     }
     // const { _id: prod_key } = product_data
     // ```categories: { $in: [cat_key]```====>used to check if cat is found in the categories array
@@ -121,8 +121,8 @@ router.post("/products/:product_id/variation", verify, isStockManager,upload.sin
     const new_variation = new product_variation({
            variation_id:var_id,
             product:product_data?._id,
-            image: image?image_url:undefined,
-           // image:image_url,
+            image:image?image:undefined,
+            //image_url:image,
             size:size?size:undefined,
             color:color?color:undefined,
             weight:weight?weight:undefined,
