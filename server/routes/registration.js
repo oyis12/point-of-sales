@@ -5,11 +5,13 @@ import mongoose from 'mongoose';
 import staff from '../models/staff.js';
 import company from '../models/company.js';
 import verifyToken from '../middleware/verification.js';
+import upload from "../utils/upload.js";
+import cloudinary from "../utils/cloudinaryConfig.js";
 
 const router = express.Router();
 
 //=========create the company=========
-router.post("/company", verifyToken, async (req, res) => {
+router.post("/company", verifyToken,upload.single('avatar'), async (req, res) => {
     const {
         name,
         phone,
@@ -19,7 +21,7 @@ router.post("/company", verifyToken, async (req, res) => {
         landmark,
         city,
         country,
-        logo,
+        avatar,
     } = req.body
 
     if (!req.user?.previleges.includes(111)) return res.status(403).json({
@@ -28,6 +30,12 @@ router.post("/company", verifyToken, async (req, res) => {
         code: 604,
     });
     try {
+
+        let avatar = null;
+        if (req.file) {
+          const result = await cloudinary.uploader.upload(req.file.path);
+          avatar = result.secure_url;
+        }
         // console.log("test=====>", req.user.company, req.user, req.user.company?._id,)
         const checkForCompany = await companies.findById(req.user?.company?._id, 'company_id name company_admin')
         if (checkForCompany) return res.status(403).json({ msg: "you have created a company already", type: "EXIST", code: 602 });
@@ -45,7 +53,7 @@ router.post("/company", verifyToken, async (req, res) => {
                 city,
                 country
             },
-            logo: logo ? logo : "",
+            avatar: avatar ? avatar : "",
             admins: [req.user?._id]
         })
         const savedCompany = await newCompany.save();

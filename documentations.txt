@@ -1,0 +1,46 @@
+Authorization:
+Requires the user to be a stock manager (stock manager).
+Request:
+
+Method: POST
+
+Endpoint: /products/:product_id/variation Generated Product ID e.g (PRD895)
+
+Headers:
+Authorization: Bearer <token> (for authentication)
+Content-Type: multipart/form-data (if uploading an image)
+
+Body:
+
+image (required, file): The image file for the product variation.
+product (required, objectID): Generated Product ID pass to the params (PRD895)
+size (optional, string): The size of the product variation.
+color (optional, string): The color of the product variation.
+weight (optional, string): The weight of the product variation.
+alias (optional, string): An alias or nickname for the variation.
+bulk_type (optional, string): The type of bulk if applicable.
+packaging (optional, string): Packaging details.
+other_details (optional, string): Any other additional details about the variation.
+
+SUCCESS RESPONSE:
+
+{
+  "msg": "variation created success",
+  "data": {
+    "variation_id": "VAR1234567", // Generated variation ID
+    "product": {
+      "product_id": "669f5a617e80c6f3ebd22693",
+      "name": "Product Name"
+    },
+    "size": "Large",
+    "color": "Red",
+    "weight": "1kg",
+    "alias": "Large Red",
+    "bulk_type": "Box",
+    "packaging": "Plastic Wrap",
+    "other_details": "Additional info",
+    "image": "URL to image"
+  },
+  "type": "SUCCESS",
+  "code": 600
+}
