@@ -173,6 +173,7 @@ const Users = () => {
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(
         `https://cashify-wzfy.onrender.com/api/v1/staffs/all`,
         {
@@ -203,6 +204,8 @@ const Users = () => {
       setDataSource(newData);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -526,15 +529,17 @@ const Users = () => {
               <div className="flex justify-center items-center h-96">
                 <Ring />
               </div>
+            ) : dataSource.length === 0 ? (
+              <div className="text-center text-gray-500 mt-4 h-96 flex justify-center items-center">No data available</div>
             ) : (
               <Table
                 columns={columns}
                 dataSource={dataSource}
                 bordered
-                rowKey="id"
                 size="middle"
               />
             )}
+
           </header>
         </div>
         {/* <Outlet /> */}
