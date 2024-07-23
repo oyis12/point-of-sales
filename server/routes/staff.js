@@ -6,12 +6,14 @@ import staff from "../models/staff.js";
 import store from "../models/store.js";
 import company from "../models/company.js";
 import verifyToken, { isAdmin, isCompanyStaff } from "../middleware/verification.js";
+import upload from "../utils/upload.js";
+import cloudinary from "../utils/cloudinaryConfig.js";
 
 const router = express.Router();
 
 
 // =====create staff record=====
-router.post('/staffs', verifyToken, isAdmin, async (req, res) => {
+router.post('/staffs', verifyToken, isAdmin,upload.single('avatar'), async (req, res) => {
   const {
     first_name,
     last_name,
@@ -29,6 +31,12 @@ router.post('/staffs', verifyToken, isAdmin, async (req, res) => {
   const companyData = req.req_company;
 
   try {
+
+    let avatar = null;
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      avatar = result.secure_url;
+    }
 
     const checkForStaff = await staff.findOne({ $or: [{ email }, { phone }] }, 'staff_id first_name last_name');
     if (checkForStaff) return res.status(403).json({ msg: "this email and/or phone has been used by another staff", type: "EXIST", code: 602 });

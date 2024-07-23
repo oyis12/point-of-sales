@@ -14,7 +14,7 @@ const CompanySchema = new mongoose.Schema(
             city: { type: String },
             country: { type: String }
         },
-        logo: { type: String },
+        avatar: { type: String },
         admins: [{
             type: ObjectId,
             ref: 'staff',
