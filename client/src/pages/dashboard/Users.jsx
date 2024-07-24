@@ -287,7 +287,7 @@ const Users = () => {
   const handleStoreChange = (value) => {
     setSelectedStoreId(value);
   };
-
+//console.log(selectedStoreId)
   const assignStaff = async () => {
     const loggedInData = user.company;
 
@@ -305,6 +305,7 @@ const Users = () => {
       setIsLoading(true);
 
       const response = await axios.put(
+        // `https://cashify-wzfy.onrender.com/api/v1/staffs/assign?staff_id=${selectedStaffId}&store_id=${selectedStoreId}`,
         `https://cashify-wzfy.onrender.com/api/v1/staffs/assign?staff_id=${selectedStaffId}&store_id=${selectedStoreId}`,
         requestData,
         {
@@ -386,7 +387,7 @@ const Users = () => {
       <div className="mt-4">
         <div className="relative overflow-x-auto shadow-sm">
           <header className="App-header">
-            <Modal open={getInfo} onCancel={onClose} footer={null}>
+            <Modal width={500} open={getInfo} onCancel={onClose} footer={null}>
               <Details staffId={staffDetails?.id} type="user" />
             </Modal>
 

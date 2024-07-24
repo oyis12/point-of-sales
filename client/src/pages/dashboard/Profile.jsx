@@ -1,11 +1,11 @@
 import {useContext} from "react";
 import logo from "../../assets/image/logo.webp";
 //import  AppContext  from "../../context/AppContext.jsx";
-import { useAppContext } from '../../context/AppContext';
+import AppContext from "../../context/AppContext";
 
 const Profile = () => {
-  //const { user, formatDate} =  useContext(AppContext); 
-  const { user, formatDate } = useAppContext();
+  const { user, formatDate} =  useContext(AppContext); 
+  // const { user, formatDate } = useAppContext();
   const roleTitle = user?.previleges.includes(111) ? "Admin ID: " : user?.previleges.includes(112) ? "Product Manager ID: " : user?.previleges.includes(113) ? "Store Manager ID: " : "Cashier ID: ";
   const title = user?.previleges.includes(111) ? "Admin " : user?.previleges.includes(112) ? "Product Manager" : user?.previleges.includes(113) ? "Store Manager" : "Cashier";
   //console.log(user)
@@ -110,6 +110,7 @@ const Profile = () => {
         </div>
         <div>2</div>
       </div>
+
     </div>
   );
 };
