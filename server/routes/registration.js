@@ -107,6 +107,11 @@ router.post('/admin', async (req, res) => {
     )
 
     try {
+        let avatar = null;
+        if (req.file) {
+          const result = await cloudinary.uploader.upload(req.file.path);
+          avatar = result.secure_url;
+        }
         const checkForStaff = await staff.findOne({ $or: [{ email }, { phone }] }, 'staff_id first_name last_name');
         if (checkForStaff) return res.status(403).json({ msg: "this email and/or phone has been used by another user", type: "EXIST", code: 602 });
 
