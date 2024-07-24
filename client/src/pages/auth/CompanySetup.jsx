@@ -87,7 +87,7 @@ const CompanySetup = () => {
     },
   ];
 
-  console.log(user)
+  // console.log(user)
 
   const handleChange = (id, value) => {
     setFormData((prevFormData) => ({

@@ -9,7 +9,9 @@ import {
   Select,
   message,
   Tooltip,
+  Upload,
 } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import AppContext from "../../context/AppContext.jsx";
 import { RiEditLine } from "react-icons/ri";
 import { FaRegEye } from "react-icons/fa";
@@ -22,8 +24,14 @@ const Product = () => {
   const [dataSource, setDataSource] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState("");
+  const [variation, setVariation] = useState([
+    { id: "product_id", label: "Product ID", options: [] },
+  ]);
   const [form] = Form.useForm();
   const { authToken, user } = useContext(AppContext);
+
+  const { Option } = Select;
 
   const fields = [
     {
@@ -54,7 +62,21 @@ const Product = () => {
     },
   ];
 
-  const variation = [
+  const variations = [
+    {
+      id: "product_id",
+      label: "Product ID",
+      placeholder: "Select Product ID",
+      type: "select",
+      options: [], // This will be populated dynamically
+    },
+    {
+      id: "product_name",
+      label: "Product Name",
+      placeholder: "Product Name",
+      type: "text",
+      disabled: true, // Initially disabled until a product ID is selected
+    },
     {
       id: "image",
       label: "Image",
@@ -83,12 +105,6 @@ const Product = () => {
       id: "alias",
       label: "Alias",
       placeholder: "Alias",
-      type: "text",
-    },
-    {
-      id: "bulk_type",
-      label: "Bulk Type",
-      placeholder: "Bulk Type",
       type: "text",
     },
     {
@@ -122,6 +138,13 @@ const Product = () => {
 
   const closeModal = () => {
     setOpenVariation(false);
+  };
+
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
   };
 
   const columns = [
@@ -196,6 +219,94 @@ const Product = () => {
       ),
     },
   ];
+
+  const addProductVariation = async () => {
+    try {
+      const productId = form.getFieldValue("product_id");
+      const requestData = form.getFieldsValue();
+
+      if (!productId) {
+        console.error("Product ID is undefined or null");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("product_id", productId);
+      formData.append("product_name", requestData.product_name);
+      formData.append("image", requestData.image[0]?.originFileObj);
+      formData.append("size", requestData.size);
+      formData.append("color", requestData.color);
+      formData.append("weight", requestData.weight);
+      formData.append("alias", requestData.alias);
+      formData.append("bulk_type", requestData.bulk_type);
+      formData.append("packaging", requestData.packaging);
+      formData.append("other_details", requestData.other_details);
+
+      const response = await axios.post(
+        `https://cashify-wzfy.onrender.com/api/v1/products/${productId}/variation`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      console.log("Response:", response.data);
+      if(response === 600){
+        closeModal()
+      }
+    } catch (error) {
+      console.error("Error while adding product variation:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (Array.isArray(selectedProductId) && selectedProductId.length > 0) {
+      const productIdOptions = selectedProductId.map((product) => ({
+        value: product.product_id,
+        label: product.product_id,
+      }));
+
+      // Update variation state with options
+      setVariation((prevVariation) =>
+        prevVariation.map((field) => {
+          if (field.id === "product_id") {
+            return { ...field, options: productIdOptions };
+          }
+          return field;
+        })
+      );
+    } else {
+      // Handle case where selectedProductId is not an array or is empty
+      // Reset options for 'product_id' field
+      setVariation((prevVariation) =>
+        prevVariation.map((field) => {
+          if (field.id === "product_id") {
+            return { ...field, options: [] };
+          }
+          return field;
+        })
+      );
+    }
+  }, [selectedProductId]);
+
+  const handleProductIdChange = (productId) => {
+    // Find the product name corresponding to the selected product ID
+    const selectedProduct = selectedProductId.find(
+      (product) => product.product_id === productId
+    );
+    if (selectedProduct) {
+      form.setFieldsValue({
+        product_name: selectedProduct.name,
+      });
+    } else {
+      form.setFieldsValue({
+        product_name: "",
+      });
+    }
+  };
 
   const getCategory = async () => {
     try {
@@ -282,6 +393,7 @@ const Product = () => {
         categories: product.categories, // Include categories field
       }));
       setDataSource(sourcedData);
+      setSelectedProductId(sourcedData);
     } catch (error) {
       console.error("Error while getting records:", error);
     }
@@ -395,65 +507,7 @@ const Product = () => {
       <div className="mt-4">
         <div className="relative overflow-x-auto shadow-sm">
           <header className="App-header">
-            {/* <Modal
-              title="Add New Product"
-              open={isModalOpen}
-              onCancel={handleCancel}
-              footer={null}
-            >
-              <Form
-                form={form}
-                name="productForm"
-                onFinish={handleSubmit}
-                initialValues={{
-                  category: "",
-                  ...fields.reduce(
-                    (acc, field) => ({ ...acc, [field.id]: "" }),
-                    {}
-                  ),
-                }}
-              >
-                <Form.Item
-                  name="category"
-                  rules={[
-                    { required: true, message: "Please select a category!" },
-                  ]}
-                >
-                  <Select
-                    style={{ width: "100%" }}
-                    options={[
-                      { value: "", label: "Please select a category" },
-                      ...options,
-                    ]}
-                  />
-                </Form.Item>
-                {fields.map((field) => (
-                  <Form.Item
-                    key={field.id}
-                    name={field.id}
-                    rules={[
-                      {
-                        required: true,
-                        message: `Please input your ${field.placeholder}!`,
-                      },
-                    ]}
-                  >
-                    <Input placeholder={field.placeholder} type={field.type} />
-                  </Form.Item>
-                ))}
-                <Form.Item>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="bg-blue-700"
-                    loading={isLoading}
-                    style={{ outline: "none" }}
-                  >
-                    {isLoading ? "Please wait..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Form>
-            </Modal> */}
+           
 
             <Modal
               title="Add Product"
@@ -519,7 +573,7 @@ const Product = () => {
               </Form>
             </Modal>
 
-            {/* variation */}
+           
             <Modal
               title="Add Product Variation"
               open={openVariation}
@@ -529,24 +583,23 @@ const Product = () => {
                   key="submit"
                   type="primary"
                   loading={isLoading}
-                  onClick={handleSubmit}
+                  onClick={addProductVariation}
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700"
                 >
-                  Add
+                  {isLoading ? "Please wait..." : "Add Variation"}
                 </Button>,
               ]}
             >
               <Form
                 form={form}
                 layout="vertical"
-                onFinish={handleSubmit} // Assuming handleSubmit handles form submission
+                onFinish={addProductVariation}
                 className="grid grid-cols-1 md:grid-cols-2 gap-4"
               >
-                {variation.map((field) => (
+                {variations.map((field) => (
                   <Form.Item
                     key={field.id}
                     name={field.id}
-                    // label={field.label}
                     rules={[
                       {
                         required: true,
@@ -555,40 +608,85 @@ const Product = () => {
                     ]}
                     className="col-span-1"
                   >
-                    {field.type === "textarea" ? (
+                    {field.type === "select" ? (
+                      <Select
+                        placeholder={field.placeholder}
+                        onChange={(value) => handleProductIdChange(value)}
+                      >
+                        {variation
+                          .find((field) => field.id === "product_id")
+                          ?.options.map((option, index) => (
+                            <Option key={index} value={option.value}>
+                              {option.label}
+                            </Option>
+                          ))}
+                      </Select>
+                    ) : field.type === "text" ? (
+                      <Input
+                        placeholder={field.placeholder}
+                        disabled={field.disabled}
+                      />
+                    ) : field.type === "file" ? (
+                      <Form.Item
+                        name="image"
+                        valuePropName="fileList"
+                        getValueFromEvent={normFile}
+                        noStyle
+                      >
+                        <Upload
+                          name="image"
+                          listType="picture"
+                          beforeUpload={false}
+                        >
+                          <Button
+                            icon={<UploadOutlined />}
+                            style={{ width: "100%" }}
+                          >
+                            Click to upload
+                          </Button>
+                        </Upload>
+                      </Form.Item>
+                    ) : (
                       <Input.TextArea
                         placeholder={field.placeholder}
                         className={field.className || "textarea"}
                       />
-                    ) : (
-                      <Input
-                        placeholder={field.placeholder}
-                        type={field.type}
-                      />
                     )}
                   </Form.Item>
                 ))}
+
+                {/* Add bulk_type field as a select tag */}
+                <Form.Item
+                  key="bulk_type"
+                  name="bulk_type"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select a bulk type",
+                    },
+                  ]}
+                  className="col-span-1"
+                >
+                  <Select defaultValue="carton">
+                    <Option value="carton">Carton</Option>
+                    <Option value="bulk">Bulk</Option>
+                    <Option value="pack">Pack</Option>
+                    <Option value="roll">Roll</Option>
+                    <Option value="wrap">Wrap</Option>
+                    <Option value="dozen">Dozen</Option>
+                  </Select>
+                </Form.Item>
               </Form>
             </Modal>
 
-            {/* {isLoading ? (
-              <div className="flex justify-center items-center h-96">
-                <Ring />
-              </div>
-            ) : (
-              <Table
-                columns={columns}
-                dataSource={dataSource}
-                bordered
-                size="middle"
-              />
-            )} */}
             {isLoading ? (
               <div className="flex justify-center items-center h-96">
                 <Ring />
               </div>
             ) : dataSource.length === 0 ? (
-              <div className="text-center text-gray-500 mt-4 h-96 flex justify-center items-center">No data available</div>
+              <div className="text-center text-gray-500 mt-4 h-96 flex justify-center items-center">
+                No data available
+              </div>
             ) : (
               <Table
                 columns={columns}

@@ -457,18 +457,19 @@ const Suppliers = () => {
       </Modal>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-96">
-          <Ring />
-        </div>
-      ) : (
-        // Display table when not loading
-        <Table
-          columns={columns}
-          dataSource={dataSource}
-          bordered
-          size="middle"
-        />
-      )}
+              <div className="flex justify-center items-center h-96">
+                <Ring />
+              </div>
+            ) : dataSource.length === 0 ? (
+              <div className="text-center text-gray-500 mt-4 h-96 flex justify-center items-center">No data available</div>
+            ) : (
+              <Table
+                columns={columns}
+                dataSource={dataSource}
+                bordered
+                size="middle"
+              />
+            )}
     </div>
   );
 };
