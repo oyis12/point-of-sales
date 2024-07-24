@@ -571,10 +571,24 @@ const Product = () => {
               </Form>
             </Modal>
 
+            {/* {isLoading ? (
+              <div className="flex justify-center items-center h-96">
+                <Ring />
+              </div>
+            ) : (
+              <Table
+                columns={columns}
+                dataSource={dataSource}
+                bordered
+                size="middle"
+              />
+            )} */}
             {isLoading ? (
               <div className="flex justify-center items-center h-96">
                 <Ring />
               </div>
+            ) : dataSource.length === 0 ? (
+              <div className="text-center text-gray-500 mt-4 h-96 flex justify-center items-center">No data available</div>
             ) : (
               <Table
                 columns={columns}
