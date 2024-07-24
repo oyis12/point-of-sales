@@ -305,7 +305,7 @@ const Users = () => {
       setIsLoading(true);
 
       const response = await axios.put(
-        `https://pos-wpvg.onrender.com/api/v1/staffs/assign?staff_id=${selectedStaffId}&store_id=${selectedStoreId}`,
+        `https://cashify-wzfy.onrender.com/api/v1/staffs/assign?staff_id=${selectedStaffId}&store_id=${selectedStoreId}`,
         requestData,
         {
           headers: {

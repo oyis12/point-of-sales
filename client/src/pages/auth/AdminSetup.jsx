@@ -32,13 +32,21 @@ const AdminSetup = () => {
     }));
   };
 
- const normFile = (e) => {
-    console.log('Upload event:', e);
+//  const normFile = (e) => {
+//     console.log('Upload event:', e);
+//     if (Array.isArray(e)) {
+//       return e;
+//     }
+//     return e?.fileList;
+//   };
+
+  const normFile = (e) => {
     if (Array.isArray(e)) {
       return e;
     }
     return e?.fileList;
   };
+
 
   const currentYear = new Date().getFullYear()
 
