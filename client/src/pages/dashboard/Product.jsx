@@ -157,7 +157,15 @@ const Product = () => {
     {
       key: "5",
       title: "Image",
-      dataIndex: "Image"
+      dataIndex: "Image",
+      render: (text, record) => {
+        return <img 
+          src={record?.product_image}
+          alt="avatar"
+          className="w-20 h-20 object-cover rounded-md"
+        />
+        }
+
     },
     {
       key: "2",
