@@ -155,6 +155,11 @@ const Product = () => {
       render: (_, __, index) => index + 1,
     },
     {
+      key: "5",
+      title: "Image",
+      dataIndex: "image",
+    },
+    {
       key: "2",
       title: "Product ID",
       dataIndex: "product_id",
@@ -168,11 +173,6 @@ const Product = () => {
       key: "4",
       title: "Description",
       dataIndex: "description",
-    },
-    {
-      key: "5",
-      title: "Image",
-      dataIndex: "Image"
     },
     {
       key: "5",
@@ -401,6 +401,7 @@ const Product = () => {
         description: product.description,
         product_id: product.product_id,
         categories: product.categories, // Include categories field
+        // image: product.product_image,
       }));
       setDataSource(sourcedData);
       setSelectedProductId(sourcedData);

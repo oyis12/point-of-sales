@@ -18,7 +18,8 @@ router.post("/products/:category_id", verify, isStockManager, async (req, res) =
     name,
     product_type,
     manufacturer,
-    description
+    description,
+    product_image
   } = req.body
   const { category_id } = req.params
   const companyData = req.req_company;
@@ -36,6 +37,13 @@ router.post("/products/:category_id", verify, isStockManager, async (req, res) =
       type: "NOT_EXIST",
       code: 603,
     });
+
+    let product_image = null;
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      product_image = result.secure_url;
+    }
+
     const { _id: cat_key } = categoryData
     // ```categories: { $in: [cat_key]```====>used to check if cat is found in the categories array
     const checkProducts = await product.findOne({ name, for_company:companyData?._id.toString() }, 'name description -_id')
@@ -44,6 +52,8 @@ router.post("/products/:category_id", verify, isStockManager, async (req, res) =
       type: "EXIST",
       code: 602,
     });
+
+    
     const prod_id = "PRD" + Math.floor(Math.random() * 104026 + 7);
     
     const newproduct = new product(
@@ -54,7 +64,8 @@ router.post("/products/:category_id", verify, isStockManager, async (req, res) =
         product_type,
         manufacturer,
         categories: [cat_key],
-        description:description?description:undefined
+        description:description?description:undefined,
+        product_image: product_image?product_image:product_image
     }
     )
     const savedProduct = await newproduct.save();
