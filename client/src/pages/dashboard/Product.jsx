@@ -157,15 +157,7 @@ const Product = () => {
     {
       key: "5",
       title: "Image",
-      dataIndex: "Image",
-      render: (text, record) => {
-        return <img 
-          src={record?.product_image}
-          alt="avatar"
-          className="w-20 h-20 object-cover rounded-md"
-        />
-        }
-
+      dataIndex: "image",
     },
     {
       key: "2",
@@ -409,6 +401,7 @@ const Product = () => {
         description: product.description,
         product_id: product.product_id,
         categories: product.categories, // Include categories field
+        image: product.product_image,
       }));
       setDataSource(sourcedData);
       setSelectedProductId(sourcedData);
