@@ -18,7 +18,7 @@ const AdminSetup = () => {
     landmark: "",
     city: "",
     country: "",
-    avatar: null,
+    avatar: "",
     password: "",
     retypePassword: "",
   });
@@ -188,14 +188,25 @@ const AdminSetup = () => {
                     onChange={(e) => handleChange(field.id, e.target.value)}
                   />
                 ) : field.type === "file" ? (
+                  <Form.Item
+                  name="avatar"
+                  valuePropName="fileList"
+                  getValueFromEvent={normFile}
+                  noStyle
+                >
                   <Upload
-                    name={field.id}
-                    action="/upload.do"
+                    name="avatar"
                     listType="picture"
-                    onChange={(info) => normFile(field.id, info)}
+                    beforeUpload={false}
                   >
-                    <Button icon={<UploadOutlined />} style={{width: '100%'}}>Click to upload</Button>
+                    <Button
+                      icon={<UploadOutlined />}
+                      style={{ width: "100%" }}
+                    >
+                      Click to upload
+                    </Button>
                   </Upload>
+                </Form.Item>
                 ) : (
                   <Input
                     id={field.id}

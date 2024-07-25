@@ -68,3 +68,6 @@ label{
 .ant-upload, .ant-upload-select{
   width: 100%;
 }
+.receipt{
+  font-family: "Inconsolata", monospace;
+}
