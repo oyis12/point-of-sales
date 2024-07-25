@@ -4,7 +4,7 @@ Request:
 
 Method: POST
 
-Endpoint: /products/:product_id/variation Generated Product ID e.g (PRD895)
+Endpoint:  Generated Product ID e.g (PRD895)
 
 Headers:
 Authorization: Bearer <token> (for authentication)

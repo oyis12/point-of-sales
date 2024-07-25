@@ -58,7 +58,7 @@ const Sidebar = () => {
   };
 
   const role = getRole(user);
- console.log('Sidebar:', { user, role, routes: roleBasedRoutes[role] });
+//  console.log('Sidebar:', { user, role, routes: roleBasedRoutes[role] });
   const routesToRender = role ? roleBasedRoutes[role] : [];
 
 // useEffect(() => {

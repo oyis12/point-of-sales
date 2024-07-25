@@ -138,6 +138,7 @@ const Product = () => {
 
   const closeModal = () => {
     setOpenVariation(false);
+    form.resetFields();
   };
 
   const normFile = (e) => {
@@ -167,6 +168,11 @@ const Product = () => {
       key: "4",
       title: "Description",
       dataIndex: "description",
+    },
+    {
+      key: "5",
+      title: "Image",
+      dataIndex: "Image"
     },
     {
       key: "5",
@@ -254,9 +260,11 @@ const Product = () => {
       );
 
       console.log("Response:", response.data);
-      if(response === 600){
-        closeModal()
+      if (response === 600) {
+        closeModal();
+        getAllProduct()
       }
+      
     } catch (error) {
       console.error("Error while adding product variation:", error);
     }
@@ -321,6 +329,7 @@ const Product = () => {
       );
 
       const data = response.data.data;
+      console.log(response.data.data)
       const categories = data.products_categories.map((category) => ({
         id: category.category_id,
         name: category.name,
@@ -356,7 +365,7 @@ const Product = () => {
           },
         }
       );
-      console.log(response);
+      // console.log(response);
       message.success("Product added successfully");
       handleCancel();
       getAllProduct(); // Refresh the product list after adding
@@ -385,6 +394,7 @@ const Product = () => {
         }
       );
 
+      console.log(response)
       const sourcedData = response.data.data.map((product) => ({
         key: product.product_id, // Add unique key prop here
         name: product.name,
@@ -507,8 +517,6 @@ const Product = () => {
       <div className="mt-4">
         <div className="relative overflow-x-auto shadow-sm">
           <header className="App-header">
-           
-
             <Modal
               title="Add Product"
               open={isModalOpen}
@@ -573,7 +581,6 @@ const Product = () => {
               </Form>
             </Modal>
 
-           
             <Modal
               title="Add Product Variation"
               open={openVariation}
@@ -679,6 +686,7 @@ const Product = () => {
               </Form>
             </Modal>
 
+          
             {isLoading ? (
               <div className="flex justify-center items-center h-96">
                 <Ring />

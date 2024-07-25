@@ -13,7 +13,7 @@ const ProtectedRoute = ({ roles }) => {
   }, []);
 
   const role = getRole(user);
-  console.log('ProtectedRoute:', { user, role, roles });
+  // console.log('ProtectedRoute:', { user, role, roles });
 
   if (isLoading) {
     return <Ring />
