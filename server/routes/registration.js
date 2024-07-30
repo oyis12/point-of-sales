@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 import companies from '../models/company.js'
 import mongoose from 'mongoose';
 import staff from '../models/staff.js';
-import company from '../models/company.js';
+// import company from '../models/company.js';
 import verifyToken from '../middleware/verification.js';
 import upload from "../utils/upload.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
@@ -11,7 +11,7 @@ import cloudinary from "../utils/cloudinaryConfig.js";
 const router = express.Router();
 
 //=========create the company=========
-router.post("/company", verifyToken,upload.single('avatar'), async (req, res) => {
+router.post("/company", verifyToken,upload.single('company_logo'), async (req, res) => {
     const {
         name,
         phone,
@@ -21,7 +21,7 @@ router.post("/company", verifyToken,upload.single('avatar'), async (req, res) =>
         landmark,
         city,
         country,
-        avatar,
+        company_logo,
     } = req.body
 
     if (!req.user?.previleges.includes(111)) return res.status(403).json({
@@ -31,10 +31,10 @@ router.post("/company", verifyToken,upload.single('avatar'), async (req, res) =>
     });
     try {
 
-        let avatar = null;
+        let company_logo = null;
         if (req.file) {
           const result = await cloudinary.uploader.upload(req.file.path);
-          avatar = result.secure_url;
+          company_logo = result.secure_url;
         }
         // console.log("test=====>", req.user.company, req.user, req.user.company?._id,)
         const checkForCompany = await companies.findById(req.user?.company?._id, 'company_id name company_admin')
@@ -53,7 +53,7 @@ router.post("/company", verifyToken,upload.single('avatar'), async (req, res) =>
                 city,
                 country
             },
-            avatar: avatar ? avatar : "",
+            company_logo: company_logo,
             admins: [req.user?._id]
         })
         const savedCompany = await newCompany.save();
@@ -66,7 +66,7 @@ router.post("/company", verifyToken,upload.single('avatar'), async (req, res) =>
 })
 
 // =====create company-admin=======
-router.post('/admin', async (req, res) => {
+router.post('/admin', upload.single('avatar'), async (req, res) => {
     const {
         first_name,
         last_name,
@@ -98,7 +98,7 @@ router.post('/admin', async (req, res) => {
                 city,
                 country
             },
-            avatar: avatar ? avatar : "",
+            avatar: avatar,
             previleges: [111],
             company: new mongoose.Types.ObjectId(),
             status: "active",

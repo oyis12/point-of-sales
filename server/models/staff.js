@@ -15,7 +15,7 @@ const StaffSchema = new mongoose.Schema(
             city: { type: String, required: true },
             country: { type: String, required: true }
         },
-        avatar: { type: String },
+        avatar:{ type: String, required: true, default: "No avatar" },
         previleges: [{ type: Number, enum: [100,111, 112, 113,114],default:100}],
         company:{type:ObjectId, ref:'companies',required:[true, 'the company detail is required']},
         office: {
