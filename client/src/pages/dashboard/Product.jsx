@@ -161,9 +161,11 @@ const Product = () => {
       render: (_, __, index) => index + 1,
     },
     {
-      key: "5",
+      key: "6",
       title: "Image",
       dataIndex: "image",
+      className:"flex justify-center",
+      render: (image) => <img src={image} alt="Product" style={{ width: 50, height: 50 }}/>,
     },
     {
       key: "2",
@@ -356,45 +358,6 @@ const Product = () => {
     label: category.name,
   }));
 
-  // const addProduct = async () => {
-  //   try {
-  //     // Retrieve form data
-  //     const requestData = form.getFieldsValue();
-  //     const category_id = form.getFieldValue("category");
-  
-  //     // Create a FormData object
-  //     const formData = new FormData();
-  //     formData.append("name", requestData.product_name);
-  //     if (requestData.image && requestData.image.length > 0) {
-  //       formData.append("image", requestData.image[0]?.originFileObj);
-  //     }
-  //     formData.append("manufacturer", requestData.manufacturer);
-  //     formData.append("description", requestData.description);
-  
-  //     // POST request to the API
-  //     const response = await axios.post(
-  //       `https://cashify-wzfy.onrender.com/api/v1/products/${category_id}`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           "X-Requested-With": "XMLHttpRequest",
-  //           Authorization: `Bearer ${authToken}`,
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  
-  //     // Handle successful response
-  //     console.log(response);
-  //     message.success("Product added successfully");
-  //     handleCancel(); // Close form/modal
-  //     getAllProduct(); // Refresh product list
-  //   } catch (error) {
-  //     // Handle errors
-  //     console.error("Error while adding new record:", error);
-  //     message.error("Failed to add product");
-  //   }
-  // };
 
  
   const addProduct = async () => {
@@ -402,9 +365,6 @@ const Product = () => {
       // Retrieve form data
       const requestData = form.getFieldsValue();
       const category_id = form.getFieldValue("category");
-  
-      // Debugging: Print the retrieved form data
-      console.log("Form Data:", requestData);
   
       // Create a FormData object
       const formData = new FormData();
@@ -440,11 +400,6 @@ const Product = () => {
         console.warn("Description not provided");
       }
   
-      // Debugging: Print the FormData entries
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
-  
       // POST request to the API
       const response = await axios.post(
         `https://cashify-wzfy.onrender.com/api/v1/products/${category_id}`,
@@ -459,7 +414,7 @@ const Product = () => {
       );
   
       // Handle successful response
-      console.log("Response:", response);
+      // console.log("Response:", response);
       message.success("Product added successfully");
       handleCancel(); // Close form/modal
       getAllProduct(); // Refresh product list
@@ -492,15 +447,14 @@ const Product = () => {
           },
         }
       );
-
-      // console.log(response)
+  
       const sourcedData = response.data.data.map((product) => ({
-        key: product.product_id, // Add unique key prop here
+        key: product.product_id,
         name: product.name,
         description: product.description,
         product_id: product.product_id,
-        categories: product.categories, // Include categories field
-        image: product.product_image,
+        categories: product.categories,
+        image: product.image, // Ensure this field is correct
       }));
       setDataSource(sourcedData);
       setSelectedProductId(sourcedData);
@@ -509,6 +463,7 @@ const Product = () => {
     }
     setIsLoading(false);
   };
+
 
   useEffect(() => {
     getAllProduct();
