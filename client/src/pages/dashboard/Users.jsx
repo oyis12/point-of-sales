@@ -255,9 +255,9 @@ const Users = () => {
       landmark: record.address?.landmark || "",
       city: record.address?.city || "",
       country: record.address?.country || "",
-      avatar: record.avatar?.avatar || "",
       status: record.status || "",
       role: record.role || "",
+      avatar: record.avatar?.avatar || "",
     });
     form.setFieldsValue({
       ...formData,
