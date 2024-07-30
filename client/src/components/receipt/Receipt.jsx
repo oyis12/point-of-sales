@@ -1,8 +1,41 @@
 // Receipt.js
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import AppContext from "../../context/AppContext";
 
 const Receipt = React.forwardRef((props, ref) => {
   const { cart, total } = props;
+  const { authToken, user } = useContext(AppContext);
+  
+  const getFormattedTime = () => {
+    const now = new Date();
+    
+    let hours = now.getHours();
+    const minutes = now.getMinutes();
+    
+    const ampm = hours >= 12 ? ' PM' : ' AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    
+    const minutesFormatted = minutes < 10 ? '0' + minutes : minutes;
+    
+    return `${hours}:${minutesFormatted}${ampm}`;
+};
+
+// Get the formatted time
+const currentTime = getFormattedTime();
+
+const getFormattedDate = () => {
+  const now = new Date();
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const day = now.getDate();
+  const month = months[now.getMonth()];
+  const year = now.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+const currentDate = getFormattedDate();
+
+  console.log(user)
 
   const receiptWidth = "80mm"; // Specify the width here
 
@@ -30,12 +63,12 @@ const Receipt = React.forwardRef((props, ref) => {
       </div>
       <div className="mt-3">
         <div className="flex justify-between">
-          <p className="receipt">20-Jul-2024:</p>
-          <p className="receipt">10 : 39 AM</p>
+          <p className="receipt">{currentDate}</p>
+          <p className="receipt">{currentTime}</p>
         </div>
         <div className="flex justify-between">
           <p className="receipt">Cashier:</p>
-          <p className="receipt">MARTHA ADA</p>
+          <p className="receipt uppercase">{user.full_name}</p>
         </div>
         <div className="flex justify-between">
           <p className="receipt">Receipt No:</p>
@@ -51,7 +84,7 @@ const Receipt = React.forwardRef((props, ref) => {
           <h2 className="font-bold receipt">Price</h2>
         </div>
         <div className="relative">
-          {/* <h2 className="watermark">Company name</h2> */}
+          <h2 className="watermark">Company name</h2>
           {cart.map((item, index) => (
             <div key={index} className="flex justify-between">
               <div className="flex">

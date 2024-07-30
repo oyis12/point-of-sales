@@ -287,7 +287,7 @@ const Users = () => {
   const handleStoreChange = (value) => {
     setSelectedStoreId(value);
   };
-//console.log(selectedStoreId)
+console.log(selectedStoreId)
   const assignStaff = async () => {
     const loggedInData = user.company;
 

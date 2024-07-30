@@ -41,6 +41,12 @@ const Product = () => {
       type: "text",
     },
     {
+      id: "image",
+      label: "Image",
+      placeholder: "Image URL",
+      type: "file",
+    },
+    {
       id: "product_type",
       label: "Product Type",
       placeholder: "Product Type",
@@ -329,7 +335,7 @@ const Product = () => {
       );
 
       const data = response.data.data;
-      console.log(response.data.data)
+      // console.log(response.data.data)
       const categories = data.products_categories.map((category) => ({
         id: category.category_id,
         name: category.name,
@@ -350,30 +356,123 @@ const Product = () => {
     label: category.name,
   }));
 
+  // const addProduct = async () => {
+  //   try {
+  //     // Retrieve form data
+  //     const requestData = form.getFieldsValue();
+  //     const category_id = form.getFieldValue("category");
+  
+  //     // Create a FormData object
+  //     const formData = new FormData();
+  //     formData.append("name", requestData.product_name);
+  //     if (requestData.image && requestData.image.length > 0) {
+  //       formData.append("image", requestData.image[0]?.originFileObj);
+  //     }
+  //     formData.append("manufacturer", requestData.manufacturer);
+  //     formData.append("description", requestData.description);
+  
+  //     // POST request to the API
+  //     const response = await axios.post(
+  //       `https://cashify-wzfy.onrender.com/api/v1/products/${category_id}`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "X-Requested-With": "XMLHttpRequest",
+  //           Authorization: `Bearer ${authToken}`,
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  
+  //     // Handle successful response
+  //     console.log(response);
+  //     message.success("Product added successfully");
+  //     handleCancel(); // Close form/modal
+  //     getAllProduct(); // Refresh product list
+  //   } catch (error) {
+  //     // Handle errors
+  //     console.error("Error while adding new record:", error);
+  //     message.error("Failed to add product");
+  //   }
+  // };
+
+ 
   const addProduct = async () => {
     try {
+      // Retrieve form data
       const requestData = form.getFieldsValue();
       const category_id = form.getFieldValue("category");
-
+  
+      // Debugging: Print the retrieved form data
+      console.log("Form Data:", requestData);
+  
+      // Create a FormData object
+      const formData = new FormData();
+  
+      // Append fields to FormData
+      if (requestData.name) {
+        formData.append("name", requestData.name);
+      } else {
+        throw new Error("Product name is required");
+      }
+  
+      if (requestData.image && requestData.image.length > 0) {
+        formData.append("image", requestData.image[0]?.originFileObj);
+      } else {
+        console.warn("No image file provided");
+      }
+  
+      if (requestData.product_type) {
+        formData.append("product_type", requestData.product_type);
+      } else {
+        throw new Error("Product type is required");
+      }
+  
+      if (requestData.manufacturer) {
+        formData.append("manufacturer", requestData.manufacturer);
+      } else {
+        throw new Error("Manufacturer is required");
+      }
+  
+      if (requestData.description) {
+        formData.append("description", requestData.description);
+      } else {
+        console.warn("Description not provided");
+      }
+  
+      // Debugging: Print the FormData entries
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+  
+      // POST request to the API
       const response = await axios.post(
         `https://cashify-wzfy.onrender.com/api/v1/products/${category_id}`,
-        requestData,
+        formData,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
             Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
-      // console.log(response);
+  
+      // Handle successful response
+      console.log("Response:", response);
       message.success("Product added successfully");
-      handleCancel();
-      getAllProduct(); // Refresh the product list after adding
+      handleCancel(); // Close form/modal
+      getAllProduct(); // Refresh product list
     } catch (error) {
+      // Handle errors
       console.error("Error while adding new record:", error);
-      message.error("Failed to add product");
+      message.error(`Failed to add product: ${error.message}`);
     }
   };
+  
+  
+  
+  
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -394,7 +493,7 @@ const Product = () => {
         }
       );
 
-      console.log(response)
+      // console.log(response)
       const sourcedData = response.data.data.map((product) => ({
         key: product.product_id, // Add unique key prop here
         name: product.name,
@@ -571,6 +670,26 @@ const Product = () => {
                         placeholder={field.placeholder}
                         className={field.className}
                       />
+                    ) : field.type === "file" ? (
+                      <Form.Item
+                      name="image"
+                      valuePropName="fileList"
+                      getValueFromEvent={normFile}
+                      noStyle
+                    >
+                      <Upload
+                        name="image"
+                        listType="picture"
+                        beforeUpload={false}
+                      >
+                        <Button
+                          icon={<UploadOutlined />}
+                          style={{ width: "100%" }}
+                        >
+                          Click to upload
+                        </Button>
+                      </Upload>
+                    </Form.Item>
                     ) : (
                       <Input
                         placeholder={field.placeholder}
