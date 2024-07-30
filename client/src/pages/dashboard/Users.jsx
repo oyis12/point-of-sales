@@ -42,6 +42,7 @@ const Users = () => {
     id: "",
     first_name: "",
     last_name: "",
+    avatar: "",
     phone: "",
     email: "",
     house_number: "",
@@ -80,6 +81,13 @@ const Users = () => {
       key: "2",
       title: "Staff ID",
       dataIndex: "id",
+    },
+    {
+      key: "6",
+      title: "Image",
+      dataIndex: "image",
+      className:"flex justify-center",
+      render: (avatar) => <img src={avatar} alt="Product" style={{ width: 50, height: 50 }}/>,
     },
     {
       key: "3",
@@ -287,7 +295,7 @@ const Users = () => {
   const handleStoreChange = (value) => {
     setSelectedStoreId(value);
   };
-console.log(selectedStoreId)
+// console.log(selectedStoreId)
   const assignStaff = async () => {
     const loggedInData = user.company;
 
@@ -348,6 +356,10 @@ console.log(selectedStoreId)
     setIsLoading(false);
     setIsModalOpen(false);
   };
+
+  const addNewRecord = async () => {
+    console.log('first')
+  }
 
   const updateRecord = async () => {
     const staffID = formData.id;

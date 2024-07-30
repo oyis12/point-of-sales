@@ -3,7 +3,18 @@ import { useNavigate } from "react-router-dom";
 const { Option } = Select;
 import axios from "axios";
 import AppContext from "../../context/AppContext.jsx";
-import { Divider, Input, Button, Form, Row, Col, Select, Checkbox } from "antd";
+import {
+  Divider,
+  Input,
+  Button,
+  Form,
+  Row,
+  Col,
+  Select,
+  Checkbox,
+  Upload,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 const CreateStaff = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,20 +22,101 @@ const CreateStaff = () => {
   const { authToken, user } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    phone: "",
-    email: "",
-    house_number: "",
-    street: "",
-    landmark: "",
-    city: "",
-    country: "",
-    role: "",
-    password: "",
-    retypePassword: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   first_name: "",
+  //   last_name: "",
+  //   phone: "",
+  //   email: "",
+  //   house_number: "",
+  //   street: "",
+  //   landmark: "",
+  //   city: "",
+  //   country: "",
+  //   role: "",
+  //   password: "",
+  //   avatar: "",
+  //   retypePassword: "",
+  // });
+  const fields = [
+    {
+      id: "first_name",
+      label: "Last Name",
+      placeholder: "First Name",
+      type: "text",
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+      placeholder: "Last Name",
+      type: "text",
+    },
+    {
+      id: "avatar",
+      label: "avatar",
+      placeholder: "Image",
+      type: "file",
+    },
+    {
+      id: "phone",
+      label: "Phone",
+      placeholder: "Phone",
+      type: "text",
+    },
+    {
+      id: "email",
+      label: "Email",
+      placeholder: "Email",
+      type: "text",
+    },
+    {
+      id: "house_number",
+      label: "House Number",
+      placeholder: "House Number",
+      type: "text",
+    },
+    {
+      id: "street",
+      label: "Street",
+      placeholder: "Street",
+      type: "text",
+    },
+    {
+      id: "landmark",
+      label: "Landmark",
+      placeholder: "Landmark",
+      type: "text",
+    },
+    {
+      id: "city",
+      label: "City",
+      placeholder: "City",
+      type: "text",
+    },
+    {
+      id: "country",
+      label: "Country",
+      placeholder: "Country",
+      type: "text",
+    },
+    {
+      id: "role",
+      label: "Role",
+      placeholder: "Role",
+      type: "text",
+    },
+    {
+      id: "password",
+      label: "Password",
+      placeholder: "Password",
+      type: "password",
+    },
+    {
+      id: "retypePassword",
+      label: "Re-type Password",
+      placeholder: "Re-type Password",
+      type: "password",
+    },
+  ];
 
   const roleOptions = [
     { label: "Select role", value: "" },
@@ -35,7 +127,7 @@ const CreateStaff = () => {
 
   useEffect(() => {
     form.setFieldsValue(formData);
-  }, [formData, form]);
+  }, [fields, form]);
 
   useEffect(() => {
     user;
@@ -49,24 +141,24 @@ const CreateStaff = () => {
     }));
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    form.resetFields();
-    setFormData({
-      first_name: "",
-      last_name: "",
-      phone: "",
-      email: "",
-      house_number: "",
-      street: "",
-      landmark: "",
-      city: "",
-      country: "",
-      role: "",
-      password: "",
-      retypePassword: "",
-    });
-  };
+  // const handleCancel = () => {
+  //   setIsModalOpen(false);
+  //   form.resetFields();
+  //   setFormData({
+  //     first_name: "",
+  //     last_name: "",
+  //     phone: "",
+  //     email: "",
+  //     house_number: "",
+  //     street: "",
+  //     landmark: "",
+  //     city: "",
+  //     country: "",
+  //     role: "",
+  //     password: "",
+  //     retypePassword: "",
+  //   });
+  // };
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -74,14 +166,34 @@ const CreateStaff = () => {
     setIsLoading(false);
   };
 
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
+
   const addNewRecord = async () => {
     try {
-      const requestData = {
-        ...formData,
-      };
+      const requestData = form.getFieldsValue();
+
+      const formData = new FormData();
+      formData.append("first_name", requestData.first_name);
+      formData.append("last_name", requestData.last_name);
+      formData.append("phone", requestData.phone);
+      formData.append("email", requestData.email);
+      formData.append("house_number", requestData.house_number);
+      formData.append("street", requestData.street);
+      formData.append("landmark", requestData.landmark);
+      formData.append("city", requestData.city);
+      formData.append("country", requestData.country);
+      formData.append("role", requestData.role);
+      formData.append("password", requestData.password);
+      formData.append("avatar", requestData.avatar);
+
       const response = await axios.post(
         `https://cashify-wzfy.onrender.com/api/v1/staffs`,
-        requestData,
+        formData,
         {
           headers: {
             "X-Requested-With": "XMLHttpRequest",
@@ -92,20 +204,21 @@ const CreateStaff = () => {
 
       if (response?.data?.code === 600) {
         form.resetFields();
-        setFormData({
-          first_name: "",
-          last_name: "",
-          phone: "",
-          email: "",
-          house_number: "",
-          street: "",
-          landmark: "",
-          city: "",
-          country: "",
-          role: "",
-          password: "",
-          retypePassword: "",
-        });
+        // setFormData({
+        //   first_name: "",
+        //   last_name: "",
+        //   phone: "",
+        //   email: "",
+        //   house_number: "",
+        //   street: "",
+        //   landmark: "",
+        //   city: "",
+        //   country: "",
+        //   role: "",
+        //   password: "",
+        //   avatar: "",
+        //   retypePassword: "",
+        // });
         navigate("/dashboard/staffs");
       }
     } catch (error) {
@@ -119,13 +232,13 @@ const CreateStaff = () => {
           <Form
             form={form}
             name="storeForm"
-            initialValues={formData}
+            // initialValues={formData}
             onFinish={handleSubmit}
           >
             <Row gutter={[20]}>
               <Col xs={24} sm={24} md={16} lg={18} xl={18}>
                 <Row gutter={16}>
-                  {Object.keys(formData).map((field) => (
+                  {Object.keys(fields).map((field) => (
                     <Col span={12} key={field}>
                       <Form.Item
                         name={field}
