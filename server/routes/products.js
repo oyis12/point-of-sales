@@ -13,13 +13,13 @@ const router = express.Router();
 const filtered_fields = '-createdAt -updatedAt -__v';
 
 // create products for a company===
-router.post("/products/:category_id", verify, isStockManager, async (req, res) => {
+router.post("/products/:category_id", verify, isStockManager, upload.single('image'), async (req, res) => {
   const {
     name,
     product_type,
     manufacturer,
     description,
-    product_image
+    image
   } = req.body
   const { category_id } = req.params
   const companyData = req.req_company;
@@ -38,12 +38,11 @@ router.post("/products/:category_id", verify, isStockManager, async (req, res) =
       code: 603,
     });
 
-    let product_image = null;
+    let image = null;
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path);
-      product_image = result.secure_url;
+      image = result.secure_url;
     }
-
     const { _id: cat_key } = categoryData
     // ```categories: { $in: [cat_key]```====>used to check if cat is found in the categories array
     const checkProducts = await product.findOne({ name, for_company:companyData?._id.toString() }, 'name description -_id')
@@ -65,7 +64,7 @@ router.post("/products/:category_id", verify, isStockManager, async (req, res) =
         manufacturer,
         categories: [cat_key],
         description:description?description:undefined,
-        product_image: product_image?product_image:product_image
+        image: image
     }
     )
     const savedProduct = await newproduct.save();
