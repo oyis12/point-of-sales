@@ -49,6 +49,7 @@ const Users = () => {
     landmark: "",
     city: "",
     country: "",
+    avatar: "",
     role: "",
     password: "",
     retypePassword: "",
@@ -83,26 +84,21 @@ const Users = () => {
     },
     {
       key: "3",
+      title: "Staff ID",
+      dataIndex: "id",
+    },
+    {
+      key: "4",
       title: "First Name",
       dataIndex: "first_name",
     },
     {
-      key: "4",
+      key: "5",
       title: "Last Name",
       dataIndex: "last_name",
     },
     {
-      key: "5",
-      title: "Phone",
-      dataIndex: "phone",
-    },
-    {
-      key: "6",
-      title: "Email",
-      dataIndex: "email",
-    },
-    {
-      key: "7",
+      key: "8",
       title: "Status",
       dataIndex: "status",
     },
@@ -113,7 +109,7 @@ const Users = () => {
     },
     {
       key: "9",
-      title: "Assigned Store",
+      title: "Assigned Store ?",
       dataIndex: "assigned",
       render: (assigned) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -191,6 +187,7 @@ const Users = () => {
         last_name: staff.last_name,
         phone: staff.phone,
         email: staff.email,
+        avatar: staff.avatar,
         role: staff.previleges.includes(112)
           ? "products manager"
           : staff.previleges.includes(113)
@@ -234,6 +231,7 @@ const Users = () => {
       password: "",
       retypePassword: "",
       status: "",
+      avatar: "",
     });
   };
 
@@ -249,6 +247,7 @@ const Users = () => {
       landmark: record.address?.landmark || "",
       city: record.address?.city || "",
       country: record.address?.country || "",
+      avatar: record.avatar?.avatar || "",
       status: record.status || "",
     });
     form.setFieldsValue({
