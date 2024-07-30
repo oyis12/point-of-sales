@@ -58,7 +58,7 @@ router.post('/staffs', verifyToken, isAdmin,upload.single('avatar'), async (req,
         avatar: avatar ? avatar : "",
         previleges: [role === "stock_manager" ? 112 : role === "shop_manager" ? 113 : role === "cashier" ? 114 : 100],
         company: companyData?._id,
-        status: role === "stock_manager" ? "active" : "inactive",
+        status: role === "stock_manager" ? "active" : role === "shop_manager" ? "active" : role === "cashier" ? "active" : "inactive",
         password: CryptoJS.AES.encrypt(password, process.env.PW_CRYPT).toString()
       }
     )
