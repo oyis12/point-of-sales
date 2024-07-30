@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 const app = express();
-
 import dotenv from "dotenv";
 import dbConnect from "./utils/dbConnect.js";
 

@@ -500,7 +500,7 @@ const Product = () => {
         description: product.description,
         product_id: product.product_id,
         categories: product.categories, // Include categories field
-        // image: product.product_image,
+        image: product.product_image,
       }));
       setDataSource(sourcedData);
       setSelectedProductId(sourcedData);
