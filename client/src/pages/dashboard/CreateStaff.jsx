@@ -120,8 +120,8 @@ const CreateStaff = () => {
 
   const roleOptions = [
     { label: "Select role", value: "" },
-    { label: "Products Manager", value: "products_manager" },
-    { label: "Store Manager", value: "store_manager" },
+    { label: "Products Manager", value: "stock_manager" },
+    { label: "Store Manager", value: "shop_manager" },
     { label: "Cashier", value: "cashier" },
   ];
 
