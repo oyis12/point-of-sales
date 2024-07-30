@@ -12,6 +12,7 @@ const Pos = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const receiptRef = useRef();
   const total = cart.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
+  
 
   const products = [
     {
@@ -104,15 +105,15 @@ const Pos = () => {
   ];
 
   const logReceipt = () => {
-    console.log("Receipt:");
+    // console.log("Receipt:");
     cart.forEach((item, index) => {
-      console.log(
-        `${index + 1}. ${item.name} - Quantity: ${item.quantity} - Price: ${
-          item.price
-        } - Total: ${item.price * item.quantity}`
-      );
+      // console.log(
+      //   `${index + 1}. ${item.name} - Quantity: ${item.quantity} - Price: ${
+      //     item.price
+      //   } - Total: ${item.price * item.quantity}`
+      // );
     });
-    console.log(`Total Amount: ${total}`);
+    // console.log(`Total Amount: ${total}`);
     setIsModalVisible(true);
   };
 
