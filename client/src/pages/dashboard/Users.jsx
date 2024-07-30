@@ -59,8 +59,8 @@ const Users = () => {
 
   const roleOptions = [
     { label: "Select role", value: "" },
-    { label: "Products Manager", value: "products_manager" },
-    { label: "Store Manager", value: "store_manager" },
+    { label: "Products Manager", value: "stock_manager" },
+    { label: "Store Manager", value: "shop_manager" },
     { label: "Cashier", value: "cashier" },
   ];
 
@@ -86,7 +86,7 @@ const Users = () => {
     {
       key: "6",
       title: "Image",
-      dataIndex: "image",
+      dataIndex: "avatar",
       className:"flex justify-center",
       render: (avatar) => <img src={avatar} alt="Product" style={{ width: 50, height: 50 }}/>,
     },
@@ -106,17 +106,17 @@ const Users = () => {
       dataIndex: "last_name",
     },
     {
-      key: "8",
+      key: "6",
       title: "Status",
       dataIndex: "status",
     },
     {
-      key: "8",
+      key: "7",
       title: "Role",
       dataIndex: "role",
     },
     {
-      key: "9",
+      key: "8",
       title: "Assigned Store ?",
       dataIndex: "assigned",
       render: (assigned) => (
@@ -126,7 +126,7 @@ const Users = () => {
       ),
     },
     {
-      key: "10",
+      key: "9",
       title: "Action",
       dataIndex: "action",
       render: (_, record) => (
@@ -257,6 +257,7 @@ const Users = () => {
       country: record.address?.country || "",
       avatar: record.avatar?.avatar || "",
       status: record.status || "",
+      role: record.role || "",
     });
     form.setFieldsValue({
       ...formData,
